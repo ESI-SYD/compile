@@ -32,15 +32,17 @@ RUN echo "deb [arch=amd64 signed-by=/usr/share/keyrings/intel-graphics.gpg] http
 RUN apt-get update && \
   apt-get install -y --no-install-recommends --fix-missing \
   intel-opencl-icd \
+  clinfo \
   intel-level-zero-gpu \
   level-zero \
-  level-zero-dev && \
+  level-zero-dev libigc-dev intel-igc-cm libigdfcl-dev libigfxcmrt-dev && \
+  apt install -y --no-install-recommends --allow-downgrades --fix-missing libigc1=1.0.14828.26-736~22.04; \
   apt-get clean && \
   rm -rf /var/lib/apt/lists/*
 ENV PATH /opt/conda/bin:$PATH  
 
 FROM dev-base AS conda
-ARG PYTHON_VERSION=3.9
+ARG PYTHON_VERSION=3.10
 RUN curl -fsSL -v -k -o ~/miniconda.sh -O https://repo.anaconda.com/miniconda/Miniconda3-py39_23.9.0-0-Linux-x86_64.sh && \
   chmod +x ~/miniconda.sh && \
   # Fix conda install issue
@@ -58,6 +60,6 @@ RUN curl -fsSL -v -k -o ~/miniconda.sh -O https://repo.anaconda.com/miniconda/Mi
 FROM dev-base AS build
 COPY --from=conda /opt/conda /opt/conda
 RUN cd $HOME; \
-  no_proxy=$no_proxy wget https://registrationcenter-download.intel.com/akdlm/IRC_NAS/992857b9-624c-45de-9701-f6445d845359/l_BaseKit_p_2023.2.0.49397_offline.sh; \
+  no_proxy=$no_proxy wget https://registrationcenter-download.intel.com/akdlm/IRC_NAS/163da6e4-56eb-4948-aba3-debcec61c064/l_BaseKit_p_2024.0.1.46_offline.sh; \
   /bin/sh l_BaseKit*.sh -a --silent --eula accept; \
   rm l_BaseKit*.sh

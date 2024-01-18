@@ -7,7 +7,6 @@ CONTAINER_NAME=${2:-llvm}
 # image
 DOCKER_BUILDKIT=1 docker build --build-arg https_proxy=${https_proxy} \
                                --build-arg http_proxy=${http_proxy} \
-                               --build-arg no_proxy=${no_proxy} \
                                -t ${IMAGE_NAME} \
                                -f ../docker/Dockerfile .
 
@@ -21,5 +20,5 @@ docker run -id --name ${CONTAINER_NAME} \
 
 # build triton
 docker exec -ti ${CONTAINER_NAME} bash -c "source /opt/intel/oneapi/setvars.sh && \
-                                           export BASE=$(pwd) && \
+                                           export BASE=/home && \
                                            wget -qO- https://raw.githubusercontent.com/intel/intel-xpu-backend-for-triton/llvm-target/scripts/compile-triton.sh | bash"
