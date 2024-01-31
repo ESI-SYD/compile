@@ -36,7 +36,6 @@ RUN apt-get update && \
   intel-level-zero-gpu \
   level-zero \
   level-zero-dev libigc-dev intel-igc-cm libigdfcl-dev libigfxcmrt-dev && \
-  apt install -y --no-install-recommends --allow-downgrades --fix-missing libigc1=1.0.14828.26-736~22.04; \
   apt-get clean && \
   rm -rf /var/lib/apt/lists/*
 ENV PATH /opt/conda/bin:$PATH  
