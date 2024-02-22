@@ -62,3 +62,4 @@ RUN cd $HOME; \
   no_proxy=$no_proxy wget https://registrationcenter-download.intel.com/akdlm/IRC_NAS/163da6e4-56eb-4948-aba3-debcec61c064/l_BaseKit_p_2024.0.1.46_offline.sh; \
   /bin/sh l_BaseKit*.sh -a --silent --eula accept; \
   rm l_BaseKit*.sh
+WORKDIR /home
