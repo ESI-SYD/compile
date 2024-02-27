@@ -39,7 +39,6 @@ echo "==============================="
 echo "CLEANNING CONTAINERS..."
 echo "==============================="
 # clean container
-docker system prune -f
 if [[ -n "$(docker ps -a | grep llvm-target | awk '{print $1}')" ]]; then
     docker stop $(docker ps -a | grep llvm-target | awk '{print $1}')
     docker rm $(docker ps -a | grep llvm-target | awk '{print $1}')
@@ -68,7 +67,7 @@ if [[ $TRITON_VERSION == "210" ]]; then
     docker exec -i ${CONTAINER_NAME} bash -c "source /opt/intel/oneapi/setvars.sh"
 else
     docker exec -i ${CONTAINER_NAME} bash -c "source /opt/intel/oneapi/setvars.sh && \
-                                            export BASE=/home && \
+                                            export BASE=/workspace && \
                                             wget -qO- https://raw.githubusercontent.com/intel/intel-xpu-backend-for-triton/llvm-target/scripts/compile-triton.sh | bash"
 fi
 
