@@ -17,6 +17,7 @@ RUN apt-get update && \
     gpg-agent \
     libsm6 \
     libxext6 \
+    libgl1-mesa-glx \
     pybind11-dev \
     wget \
     vim \
