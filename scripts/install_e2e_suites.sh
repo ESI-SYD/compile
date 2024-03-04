@@ -48,7 +48,7 @@ fi
 
 cd audio
 # Optionally `git checkout {pinned_commit}`
-git checkout ${TORCH_AUDIO_PIN_COMMIT}
+# git checkout ${TORCH_AUDIO_PIN_COMMIT} break in pinned_commit
 python setup.py install
 cd ..
 
