@@ -69,17 +69,14 @@ RUN curl -fsSL -v -k -o ~/miniconda.sh -O https://repo.anaconda.com/miniconda/Mi
 FROM dev-base AS build
 COPY --from=conda /opt/conda /opt/conda
 WORKDIR /workspace
-RUN git clone https://github.com/Stonepia/pytorch.git -b dev/triton-test-3.0 && \
-    cd pytorch && pip install pyyaml && pip install -r requirements.txt && \
-    git submodule sync && git submodule update --init --recursive && \
-    python setup.py develop && cd .. && \
-    git clone https://github.com/intel/intel-extension-for-pytorch.git -b dev/triton-test-3.0 ipex && \
-    cd ipex && git submodule sync && git submodule update --init --recursive && cd .. && \
+RUN git clone https://github.com/intel/intel-xpu-backend-for-triton.git -b llvm-target && \
+    cd intel-xpu-backend-for-triton && \ 
     . /opt/intel/oneapi/setvars.sh && \
-    cd ipex && pip install -r requirements.txt && python setup.py develop
+    scripts/compile-triton.sh --pytorch --ipex
 
 FROM dev-base AS image
 COPY --from=build /opt/conda /opt/conda
 COPY --from=build /workspace/pytorch /workspace/pytorch
-COPY --from=build /workspace/ipex /workspace/ipex
+COPY --from=build /workspace/intel-extension-for-pytorch /workspace/intel-extension-for-pytorch
+COPY --from=build /workspace/intel-xpu-backend-for-triton /workspace/intel-xpu-backend-for-triton
 WORKDIR /workspace

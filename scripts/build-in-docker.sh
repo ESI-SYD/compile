@@ -63,12 +63,6 @@ echo "==============================="
 echo "BUILD TRITON IN CONTAINER..."
 echo "==============================="
 # build triton
-if [[ $TRITON_VERSION == "210" ]]; then
-    docker exec -i ${CONTAINER_NAME} bash -c "source /opt/intel/oneapi/setvars.sh"
-else
-    docker exec -i ${CONTAINER_NAME} bash -c "source /opt/intel/oneapi/setvars.sh && \
-                                            export BASE=/workspace && \
-                                            wget -qO- https://raw.githubusercontent.com/intel/intel-xpu-backend-for-triton/llvm-target/scripts/compile-triton.sh | bash"
-fi
+docker exec -i ${CONTAINER_NAME} bash -c "source /opt/intel/oneapi/setvars.sh"
 
 
