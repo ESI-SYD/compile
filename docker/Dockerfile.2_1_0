@@ -92,7 +92,7 @@ RUN git clone https://github.com/openai/triton triton_src && \
 ARG BASEKIT_URL=http://mlpc.intel.com/downloads/gpu-new/validation/IPEX/basekit/l_BaseKit_p_2024.1.0.339_offline.sh
 ARG BASEKIT_ROOT=/opt
 RUN export TERM=dumb && \
-    wget ${BASEKIT_URL} -P ${BASEKIT_ROOT} && \
+    wget -e use_proxy=no ${BASEKIT_URL} -P ${BASEKIT_ROOT} && \
     chmod +x ${BASEKIT_ROOT}/l_BaseKit_*.sh && \
     cd ${BASEKIT_ROOT} && mkdir -p ${BASEKIT_ROOT}/intel/oneapi && \
     sh ./l_BaseKit_*.sh -a --cli --silent --eula accept --install-dir ${BASEKIT_ROOT}/intel/oneapi && \
