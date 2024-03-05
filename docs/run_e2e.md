@@ -9,7 +9,8 @@ cd scripts
 
 #2. launch a tmux 
 ```
-tmux -new -s triton-xpu-test
+tmux new -s triton-xpu-test
+tmux a -t triton-xpu-test
 ```
 #3. run into container
 ```
@@ -18,6 +19,8 @@ tmux -new -s triton-xpu-test
 ```
 #4. install e2e suites
 ```
+cd /workspace
+wget https://raw.githubusercontent.com/ESI-SYD/compile/main/scripts/install_e2e_suites.sh
 bash install_e2e_suites.sh
 ```
 [Note, check timm transformers version]
@@ -25,6 +28,7 @@ bash install_e2e_suites.sh
 #5. run
 ```
 cd /workspace/pytorch
+source /opt/intel/oneapi/setvars.sh
 wget https://raw.githubusercontent.com/intel/intel-xpu-backend-for-triton/llvm-target/scripts/inductor_xpu_test.sh
 echo -e "========================================================================="
 date +"%Y-%m-%d %H:%M:%S"
