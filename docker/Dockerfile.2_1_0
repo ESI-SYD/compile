@@ -86,7 +86,6 @@ RUN git clone https://github.com/openai/triton triton_src && \
     cd third_party/intel_xpu_backend && git checkout spirv-target && git pull && \
     cd /workspace && \
     git clone -b ${PT_BRANCH} ${PT_REPO} && \
-    git clone -b ${IPEX_BRANCH} ${IPEX_REPO} && \
     cd pytorch && git checkout ${PT_COMMIT} && git submodule sync && git submodule update --init --recursive && \
     python setup.py develop && cd ..
 ARG BASEKIT_URL=http://mlpc.intel.com/downloads/gpu-new/validation/IPEX/basekit/l_BaseKit_p_2024.1.0.339_offline.sh
