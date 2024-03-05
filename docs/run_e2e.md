@@ -1,0 +1,42 @@
+
+
+#1. docker env 
+```
+3.0: bash scripts/build-in-docker.sh
+2.1: bash scripts/build-in-docker.sh 210
+```
+
+#2. launch a tmux 
+```
+tmux -new -s triton-xpu-test
+```
+#3. run into container
+```
+3.0:  docker exec -ti llvm-target bash
+2.1: docker exec -ti spirv-210 bsah
+```
+#4. install e2e suites
+```
+bash scripts/install_e2e_suites.sh
+```
+[Note, check timm transformers version]
+
+#5. run
+```
+cd /workspace/pytorch
+wget https://raw.githubusercontent.com/intel/intel-xpu-backend-for-triton/llvm-target/scripts/inductor_xpu_test.sh
+echo -e "========================================================================="
+date +"%Y-%m-%d %H:%M:%S"
+echo -e "huggingface performance"
+echo -e "========================================================================="
+bash inductor_xpu_test.sh huggingface amp_bf16 inference performance xpu 0 & \
+bash inductor_xpu_test.sh huggingface amp_bf16 training performance xpu 1 & \
+bash inductor_xpu_test.sh huggingface amp_fp16 inference performance xpu 2 & \
+bash inductor_xpu_test.sh huggingface amp_fp16 training performance xpu 3 & wait
+bash inductor_xpu_test.sh huggingface bfloat16 inference performance xpu 0 & \
+bash inductor_xpu_test.sh huggingface bfloat16 training performance xpu 1 & \
+bash inductor_xpu_test.sh huggingface float16 inference performance xpu 2 & \
+bash inductor_xpu_test.sh huggingface float16 training performance xpu 3 & wait
+bash inductor_xpu_test.sh huggingface float32 inference performance xpu 0 & \
+bash inductor_xpu_test.sh huggingface float32 training performance xpu 1 & wait
+```
