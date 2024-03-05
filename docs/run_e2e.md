@@ -35,6 +35,8 @@ echo -e "=======================================================================
 date +"%Y-%m-%d %H:%M:%S"
 echo -e "huggingface accuracy"
 echo -e "========================================================================="
+# If triton is 2.1 version, please add this flag
+export TRITON_XPU_USE_LEGACY_API=1
 bash inductor_xpu_test.sh huggingface amp_bf16 inference accuracy xpu 0 & \
 bash inductor_xpu_test.sh huggingface amp_bf16 training accuracy xpu 1 & \
 bash inductor_xpu_test.sh huggingface amp_fp16 inference accuracy xpu 2 & \
