@@ -2,8 +2,9 @@
 
 #1. docker env 
 ```
-3.0: bash scripts/build-in-docker.sh
-2.1: bash scripts/build-in-docker.sh 210
+cd scripts
+3.0: bash build-in-docker.sh
+2.1: bash build-in-docker.sh 210
 ```
 
 #2. launch a tmux 
@@ -17,7 +18,7 @@ tmux -new -s triton-xpu-test
 ```
 #4. install e2e suites
 ```
-bash scripts/install_e2e_suites.sh
+bash install_e2e_suites.sh
 ```
 [Note, check timm transformers version]
 
