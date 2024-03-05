@@ -13,7 +13,7 @@ tmux -new -s triton-xpu-test
 #3. run into container
 ```
 3.0:  docker exec -ti llvm-target bash
-2.1: docker exec -ti spirv-210 bsah
+2.1: docker exec -ti spirv-210 bash
 ```
 #4. install e2e suites
 ```
@@ -27,16 +27,16 @@ cd /workspace/pytorch
 wget https://raw.githubusercontent.com/intel/intel-xpu-backend-for-triton/llvm-target/scripts/inductor_xpu_test.sh
 echo -e "========================================================================="
 date +"%Y-%m-%d %H:%M:%S"
-echo -e "huggingface performance"
+echo -e "huggingface accuracy"
 echo -e "========================================================================="
-bash inductor_xpu_test.sh huggingface amp_bf16 inference performance xpu 0 & \
-bash inductor_xpu_test.sh huggingface amp_bf16 training performance xpu 1 & \
-bash inductor_xpu_test.sh huggingface amp_fp16 inference performance xpu 2 & \
-bash inductor_xpu_test.sh huggingface amp_fp16 training performance xpu 3 & wait
-bash inductor_xpu_test.sh huggingface bfloat16 inference performance xpu 0 & \
-bash inductor_xpu_test.sh huggingface bfloat16 training performance xpu 1 & \
-bash inductor_xpu_test.sh huggingface float16 inference performance xpu 2 & \
-bash inductor_xpu_test.sh huggingface float16 training performance xpu 3 & wait
-bash inductor_xpu_test.sh huggingface float32 inference performance xpu 0 & \
-bash inductor_xpu_test.sh huggingface float32 training performance xpu 1 & wait
+bash inductor_xpu_test.sh huggingface amp_bf16 inference accuracy xpu 0 & \
+bash inductor_xpu_test.sh huggingface amp_bf16 training accuracy xpu 1 & \
+bash inductor_xpu_test.sh huggingface amp_fp16 inference accuracy xpu 2 & \
+bash inductor_xpu_test.sh huggingface amp_fp16 training accuracy xpu 3 & wait
+bash inductor_xpu_test.sh huggingface bfloat16 inference accuracy xpu 0 & \
+bash inductor_xpu_test.sh huggingface bfloat16 training accuracy xpu 1 & \
+bash inductor_xpu_test.sh huggingface float16 inference accuracy xpu 2 & \
+bash inductor_xpu_test.sh huggingface float16 training accuracy xpu 3 & wait
+bash inductor_xpu_test.sh huggingface float32 inference accuracy xpu 0 & \
+bash inductor_xpu_test.sh huggingface float32 training accuracy xpu 1 & wait
 ```
