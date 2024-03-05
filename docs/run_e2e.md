@@ -20,6 +20,7 @@ tmux a -t triton-xpu-test
 #4. install e2e suites
 ```
 cd /workspace
+source /opt/intel/oneapi/setvars.sh
 wget https://raw.githubusercontent.com/ESI-SYD/compile/main/scripts/install_e2e_suites.sh
 bash install_e2e_suites.sh
 ```
