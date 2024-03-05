@@ -85,6 +85,6 @@ RUN git clone https://github.com/Stonepia/pytorch.git -b dev/triton-test-3.0 && 
 FROM dev-base AS image
 COPY --from=build /opt/conda /opt/conda
 COPY --from=build /workspace/pytorch /workspace/pytorch
-COPY --from=build /workspace/intel-extension-for-pytorch /workspace/intel-extension-for-pytorch
+COPY --from=build /workspace/ipex /workspace/ipex
 COPY --from=build /workspace/intel-xpu-backend-for-triton /workspace/intel-xpu-backend-for-triton
 WORKDIR /workspace
