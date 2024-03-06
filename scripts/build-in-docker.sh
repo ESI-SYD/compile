@@ -9,12 +9,12 @@ DOCKERFILE_NAME=""
 CONTAINER_NAME=""
 if [[ $TRITON_VERSION == "210" ]]; then
     DOCKERFILE_NAME="Dockerfile.2_1_0"
-    IMAHE_NAME="triton-xpu-210"
-    CONTAINER_NAME="spirv-210"
+    IMAHE_NAME="triton-xpu-210-${IMAGE}"
+    CONTAINER_NAME="spirv-210-${CONTAINER}"
 else
     DOCKERFILE_NAME="Dockerfile"
-    IMAHE_NAME="triton-xpu-llvm"
-    CONTAINER_NAME="llvm-target"
+    IMAHE_NAME="triton-xpu-llvm-${IMAGE}"
+    CONTAINER_NAME="llvm-target-${CONTAINER}"
 fi
 
 # print
@@ -54,6 +54,7 @@ echo "==============================="
 # container
 docker run -id --name ${CONTAINER_NAME} \
                --privileged \
+               -v ${WORKSPACE}:/workspace/jenkins \
                --env https_proxy=${https_proxy} \
                --env http_proxy=${http_proxy} \
                --net host \
