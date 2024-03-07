@@ -65,7 +65,13 @@ node(env.nodes_label){
             fi
             cd /workspace/pytorch
             source /opt/intel/oneapi/setvars.sh
-            wget https://raw.githubusercontent.com/intel/intel-xpu-backend-for-triton/llvm-target/scripts/inductor_xpu_test.sh
+
+            if [ -e /workspace/pytorch/inductor_xpu_test.sh ];then
+                echo -e "inductor_xpu_test.sh ready"
+            else
+                wget https://raw.githubusercontent.com/intel/intel-xpu-backend-for-triton/llvm-target/scripts/inductor_xpu_test.sh
+            fi
+
             if [ ${TRITON_VERSION} == "210"];then
                 export TRITON_XPU_USE_LEGACY_API=1
             else
@@ -102,7 +108,19 @@ node(env.nodes_label){
 
             echo -e "========================================================================="
             echo -e "torchbench performance"
-            echo -e "========================================================================="   
+            echo -e "========================================================================="
+            pip install tqdm pandas pyre-extensions torchrec tensorboardX dalle2_pytorch torch_geometric scikit-image matplotlib  gym fastNLP doctr matplotlib opacus python-doctr higher opacus dominate kaldi-io librosa effdet pycocotools diffusers
+            pip uninstall -y pyarrow pandas
+            pip install pyarrow pandas
+
+            git clone https://github.com/facebookresearch/detectron2.git
+            python -m pip install -e detectron2
+
+            git clone --recursive https://github.com/facebookresearch/multimodal.git multimodal
+            pushd multimodal
+            pip install -e .
+            popd
+
             bash inductor_xpu_test.sh torchbench amp_bf16 inference performance xpu 0 & \
             bash inductor_xpu_test.sh torchbench amp_bf16 training performance xpu 1 & \
             bash inductor_xpu_test.sh torchbench amp_fp16 inference performance xpu 2 & \
@@ -132,7 +150,7 @@ node(env.nodes_label){
                     docker exec -ti llvm-target-${CONTAINER} bash
                 fi
                 cd /workspace/pytorch
-                wget https://github.com/ESI-SYD/compile/blob/main/inductor_perf_summary.py
+                wget https://raw.githubusercontent.com/ESI-SYD/compile/main/scripts/inductor_perf_summary.py
                 python inductor_perf_summary.py -r refer -p amp_bf16 amp_fp16 bfloat16 float16 float32
                 python inductor_perf_summary.py -r refer -p amp_bf16 amp_fp16 bfloat16 float16 float32 -s timm_models
                 python inductor_perf_summary.py -r refer -p amp_bf16 amp_fp16 bfloat16 float16 float32 -s torchbench
@@ -164,7 +182,13 @@ node(env.nodes_label){
             fi
             cd /workspace/pytorch
             source /opt/intel/oneapi/setvars.sh
-            wget https://raw.githubusercontent.com/intel/intel-xpu-backend-for-triton/llvm-target/scripts/inductor_xpu_test.sh
+
+            if [ -e /workspace/pytorch/inductor_xpu_test.sh ];then
+                echo -e "inductor_xpu_test.sh ready"
+            else
+                wget https://raw.githubusercontent.com/intel/intel-xpu-backend-for-triton/llvm-target/scripts/inductor_xpu_test.sh
+            fi
+
             if [ ${TRITON_VERSION} == "210"];then
                 export TRITON_XPU_USE_LEGACY_API=1
             else
@@ -230,7 +254,7 @@ node(env.nodes_label){
                     docker exec -ti llvm-target-${CONTAINER} bash
                 fi
                 cd /workspace/pytorch
-                wget https://github.com/ESI-SYD/compile/blob/main/scripts/inductor_accuracy_results_check.sh
+                wget https://raw.githubusercontent.com/ESI-SYD/compile/ruijie/add_docker_groovy/scripts/inductor_accuracy_results_check.sh
                 bash inductor_accuracy_results_check.sh
                 '''
             }catch (Exception e) {
