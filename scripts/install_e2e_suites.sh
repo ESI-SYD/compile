@@ -70,5 +70,5 @@ python install.py
 pip install -e .
 
 # issue: timm transformers shouble be re-install
-pip install transformers==4.27.4
-pip install "git+https://github.com/rwightman/pytorch-image-models@b9d43c7dcac1fe05e851dd7be7187b108af593d2" 
+pip install transformers==4.27.4 --no-deps
+pip install "git+https://github.com/rwightman/pytorch-image-models@b9d43c7dcac1fe05e851dd7be7187b108af593d2" --no-deps
