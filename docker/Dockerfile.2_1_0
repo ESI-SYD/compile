@@ -72,12 +72,12 @@ RUN curl -fsSL -v -k -o ~/miniconda.sh -O https://repo.anaconda.com/miniconda/Mi
     rm -f /opt/conda/lib/libstdc++.so.6
 
 FROM dev-base AS build
-ARG PT_REPO=https://github.com/Stonepia/pytorch.git
-ARG PT_BRANCH=dev/triton-test-3.0
-ARG PT_COMMIT=7c1c58ccac5650c76eee745ee77bbe33577165d9
-ARG IPEX_REPO=https://github.com/intel/intel-extension-for-pytorch.git
-ARG IPEX_BRANCH=dev/triton-test-3.0
-ARG IPEX_COMMIT=faadb009c12ed4fb3133db9a10020726016b3d24
+ARG PT_REPO=${torch_repo}
+ARG PT_BRANCH=${torch_branch}
+ARG PT_COMMIT=${torch_commit}
+ARG IPEX_REPO=${ipex_repo}
+ARG IPEX_BRANCH=${ipex_branch} 
+ARG IPEX_COMMIT=${ipex_commit} 
 COPY --from=conda /opt/conda /opt/conda
 WORKDIR /workspace
 RUN git clone https://github.com/openai/triton triton_src && \
@@ -88,7 +88,7 @@ RUN git clone https://github.com/openai/triton triton_src && \
     git clone -b ${PT_BRANCH} ${PT_REPO} && \
     cd pytorch && git checkout ${PT_COMMIT} && git submodule sync && git submodule update --init --recursive && \
     python setup.py develop && cd ..
-ARG BASEKIT_URL=http://mlpc.intel.com/downloads/gpu-new/validation/IPEX/basekit/l_BaseKit_p_2024.1.0.339_offline.sh
+ARG BASEKIT_URL=${Basekit_url}
 ARG BASEKIT_ROOT=/opt
 RUN export TERM=dumb && \
     wget -e use_proxy=no ${BASEKIT_URL} -P ${BASEKIT_ROOT} && \

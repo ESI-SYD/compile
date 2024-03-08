@@ -67,15 +67,21 @@ RUN curl -fsSL -v -k -o ~/miniconda.sh -O https://repo.anaconda.com/miniconda/Mi
     rm -f /opt/conda/lib/libstdc++.so.6
 # pt and ipex
 FROM dev-base AS build
+ARG PT_REPO=${torch_repo}
+ARG PT_BRANCH=${torch_branch}
+ARG PT_COMMIT=${torch_commit}
+ARG IPEX_REPO=${ipex_repo}
+ARG IPEX_BRANCH=${ipex_branch} 
+ARG IPEX_COMMIT=${ipex_commit}
 COPY --from=conda /opt/conda /opt/conda
 WORKDIR /workspace
-RUN git clone https://github.com/Stonepia/pytorch.git -b dev/triton-test-3.0 && \
-    cd pytorch && git checkout c9153c96f547f269581743e7443aa86d7e003505 && \
+RUN git clone -b ${PT_BRANCH} ${PT_REPO} && \
+    cd pytorch && git checkout ${PT_COMMIT} && \
     pip install pyyaml && pip install -r requirements.txt && \
     git submodule sync && git submodule update --init --recursive && \
     python setup.py develop && cd .. && \
-    git clone https://github.com/intel/intel-extension-for-pytorch.git -b dev/triton-test-3.0 ipex && \
-    cd ipex && git checkout faadb009c12ed4fb3133db9a10020726016b3d24 && git submodule sync && \
+    git clone -b ${IPEX_BRANCH} ${IPEX_REPO} ipex && \
+    cd ipex && git checkout ${IPEX_COMMIT} && git submodule sync && \
     git submodule update --init --recursive && cd .. && \
     . /opt/intel/oneapi/setvars.sh && \
     cd ipex && pip install -r requirements.txt && python setup.py develop && cd .. && \
