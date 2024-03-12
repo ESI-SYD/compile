@@ -32,6 +32,12 @@ echo "==============================="
 # build image
 DOCKER_BUILDKIT=1 docker build --build-arg https_proxy=${https_proxy} \
                                --build-arg http_proxy=${http_proxy} \
+                               --build-arg torch_repo=${torch_repo} \
+                               --build-arg torch_branch=${torch_branch} \
+                               --build-arg torch_commit=${torch_commit} \
+                               --build-arg ipex_repo=${ipex_repo} \
+                               --build-arg ipex_branch=${ipex_branch} \
+                               --build-arg ipex_commit=${ipex_commit} \
                                -t ${IMAHE_NAME} \
                                -f ../docker/${DOCKERFILE_NAME} .
 
