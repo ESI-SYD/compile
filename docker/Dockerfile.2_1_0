@@ -72,12 +72,12 @@ RUN curl -fsSL -v -k -o ~/miniconda.sh -O https://repo.anaconda.com/miniconda/Mi
     rm -f /opt/conda/lib/libstdc++.so.6
 
 FROM dev-base AS build
-ARG PT_REPO=${torch_repo}
-ARG PT_BRANCH=${torch_branch}
-ARG PT_COMMIT=${torch_commit}
-ARG IPEX_REPO=${ipex_repo}
-ARG IPEX_BRANCH=${ipex_branch} 
-ARG IPEX_COMMIT=${ipex_commit} 
+ARG torch_repo
+ARG torch_branch
+ARG torch_commit
+ARG ipex_repo
+ARG ipex_branch
+ARG ipex_commit
 COPY --from=conda /opt/conda /opt/conda
 WORKDIR /workspace
 RUN git clone https://github.com/openai/triton triton_src && \
@@ -85,13 +85,13 @@ RUN git clone https://github.com/openai/triton triton_src && \
     git submodule sync && git submodule update --init --recursive && \
     cd third_party/intel_xpu_backend && git checkout spirv-target && git pull && \
     cd /workspace && \
-    git clone -b ${PT_BRANCH} ${PT_REPO} && \
-    cd pytorch && git checkout ${PT_COMMIT} && git submodule sync && git submodule update --init --recursive && \
+    git clone -b ${torch_branch} ${torch_repo} && \
+    cd pytorch && git checkout ${torch_commit} && git submodule sync && git submodule update --init --recursive && \
     python setup.py develop && cd ..
-ARG BASEKIT_URL=${Basekit_url}
+ARG Basekit_url
 ARG BASEKIT_ROOT=/opt
 RUN export TERM=dumb && \
-    wget -e use_proxy=no ${BASEKIT_URL} -P ${BASEKIT_ROOT} && \
+    wget -e use_proxy=no ${Basekit_url} -P ${BASEKIT_ROOT} && \
     chmod +x ${BASEKIT_ROOT}/l_BaseKit_*.sh && \
     cd ${BASEKIT_ROOT} && mkdir -p ${BASEKIT_ROOT}/intel/oneapi && \
     sh ./l_BaseKit_*.sh -a --cli --silent --eula accept --install-dir ${BASEKIT_ROOT}/intel/oneapi && \
@@ -108,8 +108,8 @@ RUN chmod +r -R ${BASEKIT_ROOT}/intel/oneapi && \
     export ExperimentalCopyThroughLock=1 && \
     # /usr/bin/ld: cannot find -lze_loader: No such file or directory
     export LIBZE_PATH=/usr/lib/x86_64-linux-gnu/libze_loader.so && \
-    git clone -b ${IPEX_BRANCH} ${IPEX_REPO} && \
-    cd intel-extension-for-pytorch && git checkout ${IPEX_COMMIT} && \
+    git clone -b ${ipex_branch} ${ipex_repo} && \
+    cd intel-extension-for-pytorch && git checkout ${ipex_commit} && \
     git submodule sync && git submodule update --init --recursive && \
     pip install -r requirements.txt && \
     pip uninstall mpmath --yes && \

@@ -38,6 +38,7 @@ DOCKER_BUILDKIT=1 docker build --build-arg https_proxy=${https_proxy} \
                                --build-arg ipex_repo=${ipex_repo} \
                                --build-arg ipex_branch=${ipex_branch} \
                                --build-arg ipex_commit=${ipex_commit} \
+                               --build-arg Basekit_url=${Basekit_url} \
                                -t ${IMAHE_NAME} \
                                -f ../docker/${DOCKERFILE_NAME} .
 

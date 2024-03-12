@@ -34,10 +34,10 @@ RUN echo "deb [arch=amd64 signed-by=/usr/share/keyrings/intel-graphics.gpg] http
 
 # latest public oneapi basekit refer to 2024.0.1
 # https://www.intel.com/content/www/us/en/developer/tools/oneapi/base-toolkit-download.html?operatingsystem=linux&distributions=aptpackagemanager
-RUN wget -O- https://apt.repos.intel.com/intel-gpg-keys/GPG-PUB-KEY-INTEL-SW-PRODUCTS.PUB \ | gpg --dearmor | \
-tee /usr/share/keyrings/oneapi-archive-keyring.gpg > /dev/null
-RUN echo "deb [signed-by=/usr/share/keyrings/oneapi-archive-keyring.gpg] https://apt.repos.intel.com/oneapi all main" | \
- tee /etc/apt/sources.list.d/oneAPI.list
+# RUN wget -O- https://apt.repos.intel.com/intel-gpg-keys/GPG-PUB-KEY-INTEL-SW-PRODUCTS.PUB \ | gpg --dearmor | \
+# tee /usr/share/keyrings/oneapi-archive-keyring.gpg > /dev/null
+# RUN echo "deb [signed-by=/usr/share/keyrings/oneapi-archive-keyring.gpg] https://apt.repos.intel.com/oneapi all main" | \
+#  tee /etc/apt/sources.list.d/oneAPI.list
 
 
 RUN apt-get update && \
@@ -82,12 +82,33 @@ RUN git clone -b ${torch_branch} ${torch_repo} && \
     pip install pyyaml && pip install -r requirements.txt && \
     git submodule sync && git submodule update --init --recursive && \
     python setup.py develop && cd .. && \
+ARG Basekit_url
+ARG BASEKIT_ROOT=/opt
+RUN export TERM=dumb && \
+    wget -e use_proxy=no ${Basekit_url} -P ${BASEKIT_ROOT} && \
+    chmod +x ${BASEKIT_ROOT}/l_BaseKit_*.sh && \
+    cd ${BASEKIT_ROOT} && mkdir -p ${BASEKIT_ROOT}/intel/oneapi && \
+    sh ./l_BaseKit_*.sh -a --cli --silent --eula accept --install-dir ${BASEKIT_ROOT}/intel/oneapi && \
+    rm -rf ${BASEKIT_ROOT}/l_BaseKit_*.sh
+
+RUN chmod +r -R ${BASEKIT_ROOT}/intel/oneapi && \
+    . ${BASEKIT_ROOT}/intel/oneapi/setvars.sh && \
+    export MKL_DPCPP_ROOT=${MKLROOT} && \
+    export LD_LIBRARY_PATH=${MKL_DPCPP_ROOT}/lib:${MKL_DPCPP_ROOT}/lib64:${MKL_DPCPP_ROOT}/lib/intel64:${LD_LIBRARY_PATH} && \
+    export LIBRARY_PATH=${MKL_DPCPP_ROOT}/lib:${MKL_DPCPP_ROOT}/lib64:${MKL_DPCPP_ROOT}/lib/intel64:$LIBRARY_PATH && \
+    export USE_AOT_DEVLIST='12.55.8' && \
+    export SYCL_PI_LEVEL_ZERO_USE_IMMEDIATE_COMMANDLISTS=1 && \
+    export SYCL_PI_LEVEL_ZERO_DEVICE_SCOPE_EVENTS=0 && \
+    export ExperimentalCopyThroughLock=1 && \
+    # /usr/bin/ld: cannot find -lze_loader: No such file or directory
+    export LIBZE_PATH=/usr/lib/x86_64-linux-gnu/libze_loader.so && \
     git clone -b ${ipex_branch} ${ipex_repo} ipex && \
     cd ipex && git checkout ${ipex_commit} && git submodule sync && \
     git submodule update --init --recursive && cd .. && \
     . /opt/intel/oneapi/setvars.sh && \
     cd ipex && pip install -r requirements.txt && python setup.py develop && cd .. && \
-    git clone https://github.com/intel/intel-xpu-backend-for-triton.git -b llvm-target && \
+
+RUN git clone https://github.com/intel/intel-xpu-backend-for-triton.git -b llvm-target && \
     cd intel-xpu-backend-for-triton && scripts/compile-triton.sh
 
 FROM dev-base AS image
