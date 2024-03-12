@@ -67,12 +67,12 @@ RUN curl -fsSL -v -k -o ~/miniconda.sh -O https://repo.anaconda.com/miniconda/Mi
     rm -f /opt/conda/lib/libstdc++.so.6
 # pt and ipex
 FROM dev-base AS build
-ARG PT_REPO=torch_repo
-ARG PT_BRANCH=torch_branch
-ARG PT_COMMIT=torch_commit
-ARG IPEX_REPO=ipex_repo
-ARG IPEX_BRANCH=ipex_branch 
-ARG IPEX_COMMIT=ipex_commi
+ARG PT_REPO=${torch_repo}
+ARG PT_BRANCH=${torch_branch}
+ARG PT_COMMIT=${torch_commit}
+ARG IPEX_REPO=${ipex_repo}
+ARG IPEX_BRANCH=${ipex_branch} 
+ARG IPEX_COMMIT=${ipex_commit}
 COPY --from=conda /opt/conda /opt/conda
 WORKDIR /workspace
 RUN git clone -b ${PT_BRANCH} ${PT_REPO} && \
