@@ -19,14 +19,14 @@ node(env.nodes_label){
         println('================================================================')
         println('setup nodes env')
         println('================================================================')
-        checkout scm
         sh '''
         set -e
         set +x
+        git clone -b ruijie/add_docker_groovy https://github.com/ESI-SYD/compile.git
         if [ ${TRITON_VERSION} == "210"];then
-            bash ${WORKSPACE}/scripts/build-in-docker.sh 210
+            bash ${WORKSPACE}/compile/scripts/build-in-docker.sh 210
         else
-            bash ${WORKSPACE}/scripts/build-in-docker.sh
+            bash ${WORKSPACE}/compile/scripts/build-in-docker.sh
         fi
         '''
     }//stage
