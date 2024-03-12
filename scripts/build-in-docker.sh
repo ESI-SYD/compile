@@ -2,7 +2,7 @@
 set -e
 
 # parameters
-TRITON_VERSION=${1:-}
+TRITON_VERSION=${TRITON_VERSION}
 
 # determine target
 DOCKERFILE_NAME=""

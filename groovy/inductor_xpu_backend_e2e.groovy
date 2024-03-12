@@ -24,9 +24,11 @@ node(env.nodes_label){
         set +x
         git clone -b ruijie/add_docker_groovy https://github.com/ESI-SYD/compile.git
         if [ ${TRITON_VERSION} == "210"];then
-            bash ${WORKSPACE}/compile/scripts/build-in-docker.sh 210
+            cd ${WORKSPACE}/compile/scripts
+            bash build-in-docker.sh 210
         else
-            bash ${WORKSPACE}/compile/scripts/build-in-docker.sh
+            cd ${WORKSPACE}/compile/scripts
+            bash build-in-docker.sh
         fi
         '''
     }//stage
