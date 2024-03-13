@@ -1,3 +1,4 @@
+WORKSPACE_FOLDER=/workspace
 cd /workspace/pytorch
 source /opt/intel/oneapi/setvars.sh
 
@@ -18,6 +19,19 @@ echo -e "CI test Begin"
 echo -e "========================================================================="
 pip install tokenizers==0.13
 bash inductor_xpu_test.sh huggingface amp_bf16 training accuracy xpu 3 & \
+
+python -c "import triton;print(triton.__version__)"
+
+# TODO : We use a temporary private repo. Thus we don't checkout commit.
+if [ ! -d "${WORKSPACE_FOLDER}/benchmark" ]; then
+    git clone --recursive https://github.com/weishi-deng/benchmark
+fi
+
+# git checkout ${TORCH_BENCH_PIN_COMMIT}
+cd benchmark
+python install.py
+pip install -e .
+
 bash inductor_xpu_test.sh torchbench amp_fp16 inference accuracy xpu 3 & wait
 
 cp -r /workspace/pytorch/inductor_log /workspace/jenkins/logs

@@ -59,16 +59,10 @@ python -c "import torchvision,torchtext,torchaudio;print(torchvision.__version__
 conda install -y git-lfs pyyaml pandas scipy psutil
 pip install pyre_extensions
 pip install torchrec
-# TODO : We use a temporary private repo. Thus we don't checkout commit.
-if [ ! -d "${WORKSPACE_FOLDER}/benchmark" ]; then
-    git clone --recursive https://github.com/weishi-deng/benchmark
-fi
 
-# git checkout ${TORCH_BENCH_PIN_COMMIT}
-cd benchmark
-python install.py
-pip install -e .
 
 # issue: timm transformers shouble be re-install
-pip install transformers==4.27.4
-pip install "git+https://github.com/rwightman/pytorch-image-models@b9d43c7dcac1fe05e851dd7be7187b108af593d2" 
+pip install --no-deps transformers==4.27.4
+pip install --no-deps "git+https://github.com/rwightman/pytorch-image-models@b9d43c7dcac1fe05e851dd7be7187b108af593d2" 
+
+python -c "import triton;print(triton.__version__)"
