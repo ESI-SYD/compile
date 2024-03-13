@@ -55,12 +55,6 @@ cd ..
 # Check first
 python -c "import torchvision,torchtext,torchaudio;print(torchvision.__version__, torchtext.__version__, torchaudio.__version__)"
 
-# Torchbench
-conda install -y git-lfs pyyaml pandas scipy psutil
-pip install pyre_extensions
-pip install torchrec
-
-
 # issue: timm transformers shouble be re-install
 pip install --no-deps transformers==4.27.4
 pip install --no-deps "git+https://github.com/rwightman/pytorch-image-models@b9d43c7dcac1fe05e851dd7be7187b108af593d2" 
