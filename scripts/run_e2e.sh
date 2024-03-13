@@ -36,8 +36,11 @@ if [ "$TEST_SUITE" == "timm_models" ] || [ "$TEST_SUITE" == "all" ]; then
     bash inductor_xpu_test.sh timm_models float32 training $TEST_MODE xpu 1 & wait
 fi
 
+# use newer transformers and timm when run torchbench benchmark
 # install and run Torchbench benchmark at last to avoid modifying pytorch and triton implicitly
 if [ "$TEST_SUITE" == "torchbench" ] || [ "$TEST_SUITE" == "all" ]; then
+    pip install transformers==4.38.1 --no-deps
+    pip install timm==0.9.7 --no-deps
     cd /workspace
     # install Torchbench
     conda install -y git-lfs pyyaml pandas scipy psutil
