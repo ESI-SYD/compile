@@ -59,10 +59,10 @@ node(env.nodes_label){
                 set -e
                 set +x
                 if [ ${TRITON_VERSION} == "210"];then
-                    docker exec -ti spirv-210-${CONTAINER} bash -c "wget https://raw.githubusercontent.com/ESI-SYD/compile/ruijie/add_docker_groovy/scripts/ci_scripts.sh; \
+                    docker exec -i spirv-210-${CONTAINER} bash -c "wget https://raw.githubusercontent.com/ESI-SYD/compile/ruijie/add_docker_groovy/scripts/ci_scripts.sh; \
                     bash ci_scripts.sh"
                 else
-                    docker exec -ti llvm-target-${CONTAINER} bash -c "wget https://raw.githubusercontent.com/ESI-SYD/compile/ruijie/add_docker_groovy/scripts/ci_scripts.sh; \
+                    docker exec -i llvm-target-${CONTAINER} bash -c "wget https://raw.githubusercontent.com/ESI-SYD/compile/ruijie/add_docker_groovy/scripts/ci_scripts.sh; \
                     bash ci_scripts.sh"
                 fi
                 '''
@@ -76,10 +76,10 @@ node(env.nodes_label){
                 set -e
                 set +x
                 if [ ${TRITON_VERSION} == "210"];then
-                    docker exec -ti spirv-210-${CONTAINER} bash -c "wget https://raw.githubusercontent.com/ESI-SYD/compile/ruijie/add_docker_groovy/scripts/performance_scripts.sh; \
+                    docker exec -i spirv-210-${CONTAINER} bash -c "wget https://raw.githubusercontent.com/ESI-SYD/compile/ruijie/add_docker_groovy/scripts/performance_scripts.sh; \
                     bash performance_scripts.sh"
                 else
-                    docker exec -ti llvm-target-${CONTAINER} bash -c "wget https://raw.githubusercontent.com/ESI-SYD/compile/ruijie/add_docker_groovy/scripts/performance_scripts.sh; \
+                    docker exec -i llvm-target-${CONTAINER} bash -c "wget https://raw.githubusercontent.com/ESI-SYD/compile/ruijie/add_docker_groovy/scripts/performance_scripts.sh; \
                     bash performance_scripts.sh"
                 fi
                 '''
@@ -94,14 +94,14 @@ node(env.nodes_label){
                     set -e
                     set +x
                     if [ ${TRITON_VERSION} == "210"];then
-                        docker exec -ti spirv-210-${CONTAINER} bash -c "cd /workspace/pytorch; \
+                        docker exec -i spirv-210-${CONTAINER} bash -c "cd /workspace/pytorch; \
                         wget https://raw.githubusercontent.com/ESI-SYD/compile/main/scripts/inductor_perf_summary.py; \
                         python inductor_perf_summary.py -r refer -p amp_bf16 amp_fp16 bfloat16 float16 float32; \
                         python inductor_perf_summary.py -r refer -p amp_bf16 amp_fp16 bfloat16 float16 float32 -s timm_models; \
                         python inductor_perf_summary.py -r refer -p amp_bf16 amp_fp16 bfloat16 float16 float32 -s torchbench; \
                         cp -r /workspace/pytorch/inductor_log /workspace/jenkins/logs"
                     else
-                        docker exec -ti llvm-target-${CONTAINER} bash -c "cd /workspace/pytorch; \
+                        docker exec -i llvm-target-${CONTAINER} bash -c "cd /workspace/pytorch; \
                         wget https://raw.githubusercontent.com/ESI-SYD/compile/main/scripts/inductor_perf_summary.py; \
                         python inductor_perf_summary.py -r refer -p amp_bf16 amp_fp16 bfloat16 float16 float32; \
                         python inductor_perf_summary.py -r refer -p amp_bf16 amp_fp16 bfloat16 float16 float32 -s timm_models; \
@@ -128,10 +128,10 @@ node(env.nodes_label){
                 set +e
                 set +x
                 if [ ${TRITON_VERSION} == "210"];then
-                    docker exec -ti spirv-210-${CONTAINER} bash -c "wget https://raw.githubusercontent.com/ESI-SYD/compile/ruijie/add_docker_groovy/scripts/accuracy_scripts.sh; \
+                    docker exec -i spirv-210-${CONTAINER} bash -c "wget https://raw.githubusercontent.com/ESI-SYD/compile/ruijie/add_docker_groovy/scripts/accuracy_scripts.sh; \
                     bash accuracy_scripts.sh"
                 else
-                    docker exec -ti llvm-target-${CONTAINER} bash -c "wget https://raw.githubusercontent.com/ESI-SYD/compile/ruijie/add_docker_groovy/scripts/accuracy_scripts.sh; \
+                    docker exec -i llvm-target-${CONTAINER} bash -c "wget https://raw.githubusercontent.com/ESI-SYD/compile/ruijie/add_docker_groovy/scripts/accuracy_scripts.sh; \
                     bash accuracy_scripts.sh"
                 fi
                 '''
@@ -146,11 +146,11 @@ node(env.nodes_label){
                     set +e
                     set +x
                     if [ ${TRITON_VERSION} == "210"];then
-                        docker exec -ti spirv-210-${CONTAINER} bash -c "cd /workspace/pytorch; \
+                        docker exec -i spirv-210-${CONTAINER} bash -c "cd /workspace/pytorch; \
                         wget https://raw.githubusercontent.com/ESI-SYD/compile/ruijie/add_docker_groovy/scripts/inductor_accuracy_results_check.sh; \
                         bash inductor_accuracy_results_check.sh"
                     else
-                        docker exec -ti llvm-target-${CONTAINER} bash -c "cd /workspace/pytorch; \
+                        docker exec -i llvm-target-${CONTAINER} bash -c "cd /workspace/pytorch; \
                         wget https://raw.githubusercontent.com/ESI-SYD/compile/ruijie/add_docker_groovy/scripts/inductor_accuracy_results_check.sh; \
                         bash inductor_accuracy_results_check.sh"
                     fi
