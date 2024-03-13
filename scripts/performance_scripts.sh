@@ -7,11 +7,12 @@ else
     wget https://raw.githubusercontent.com/intel/intel-xpu-backend-for-triton/llvm-target/scripts/inductor_xpu_test.sh
 fi
 
-if [ ${TRITON_VERSION} == "210"];then
+if [ ${TRITON_VERSION} == "210" ];then
     export TRITON_XPU_USE_LEGACY_API=1
 else
     echo -e "No need to set flag for triton3.0"
 fi
+pip install tokenizers==0.13
 mkdir -p /workspace/jenkins/logs
 echo -e "========================================================================="
 echo -e "huggingface performance"
