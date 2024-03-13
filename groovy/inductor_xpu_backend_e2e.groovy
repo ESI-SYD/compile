@@ -41,11 +41,11 @@ node(env.nodes_label){
             set +x
             if [ ${TRITON_VERSION} == "210"];then
                 docker exec -i spirv-210-${CONTAINER} bash -c ". /opt/intel/oneapi/setvars.sh; \
-                wget https://raw.githubusercontent.com/ESI-SYD/compile/main/scripts/install_e2e_suites.sh; \
+                wget https://raw.githubusercontent.com/ESI-SYD/compile/ruijie/add_docker_groovy/scripts/install_e2e_suites.sh; \
                 bash install_e2e_suites.sh"
             else
                 docker exec -i llvm-target-${CONTAINER} bash -c ". /opt/intel/oneapi/setvars.sh; \
-                wget https://raw.githubusercontent.com/ESI-SYD/compile/main/scripts/install_e2e_suites.sh; \
+                wget https://raw.githubusercontent.com/ESI-SYD/compile/ruijie/add_docker_groovy/scripts/install_e2e_suites.sh; \
                 bash install_e2e_suites.sh"
             fi
             '''
