@@ -17,7 +17,7 @@ mkdir -p /workspace/jenkins/logs
 echo -e "========================================================================="
 echo -e "CI test Begin"
 echo -e "========================================================================="
-pip install tokenizers==0.13
+pip install tokenizers==0.13 pandas
 bash inductor_xpu_test.sh huggingface amp_bf16 training accuracy xpu 3 & \
 
 python -c "import triton;print(triton.__version__)"
