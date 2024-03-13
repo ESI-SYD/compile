@@ -28,23 +28,8 @@ bash install_e2e_suites.sh
 
 #5. run
 ```
-cd /workspace/pytorch
-source /opt/intel/oneapi/setvars.sh
-wget https://raw.githubusercontent.com/intel/intel-xpu-backend-for-triton/llvm-target/scripts/inductor_xpu_test.sh
-echo -e "========================================================================="
-date +"%Y-%m-%d %H:%M:%S"
-echo -e "huggingface accuracy"
-echo -e "========================================================================="
 # If triton is 2.1 version, please add this flag
 export TRITON_XPU_USE_LEGACY_API=1
-bash inductor_xpu_test.sh huggingface amp_bf16 inference accuracy xpu 0 & \
-bash inductor_xpu_test.sh huggingface amp_bf16 training accuracy xpu 1 & \
-bash inductor_xpu_test.sh huggingface amp_fp16 inference accuracy xpu 2 & \
-bash inductor_xpu_test.sh huggingface amp_fp16 training accuracy xpu 3 & wait
-bash inductor_xpu_test.sh huggingface bfloat16 inference accuracy xpu 0 & \
-bash inductor_xpu_test.sh huggingface bfloat16 training accuracy xpu 1 & \
-bash inductor_xpu_test.sh huggingface float16 inference accuracy xpu 2 & \
-bash inductor_xpu_test.sh huggingface float16 training accuracy xpu 3 & wait
-bash inductor_xpu_test.sh huggingface float32 inference accuracy xpu 0 & \
-bash inductor_xpu_test.sh huggingface float32 training accuracy xpu 1 & wait
+bash run_e2e.sh all performance
+
 ```
