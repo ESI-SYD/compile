@@ -30,6 +30,8 @@ cd ${WORKSPACE_FOLDER}
 pip install transformers==4.38.1 --no-deps
 pip install timm==0.9.7 --no-deps
 
+apt-get update -y
+apt install libgl1-mesa-glx -y
 conda install -y git-lfs pyyaml pandas scipy psutil
 pip install tqdm pandas pyre-extensions torchrec tensorboardX dalle2_pytorch torch_geometric scikit-image matplotlib  gym fastNLP doctr matplotlib opacus python-doctr higher opacus dominate kaldi-io librosa effdet pycocotools diffusers
 pip uninstall -y pyarrow pandas
