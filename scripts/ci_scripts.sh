@@ -15,13 +15,16 @@ else
 fi
 mkdir -p /workspace/jenkins/logs
 echo -e "========================================================================="
-echo -e "CI test Begin"
+echo -e "CI HF test Begin"
 echo -e "========================================================================="
 pip install tokenizers==0.13 pandas
-bash inductor_xpu_test.sh huggingface amp_bf16 training accuracy xpu 3 & \
+bash inductor_xpu_test.sh huggingface amp_bf16 training accuracy xpu 3
 
 python -c "import triton;print(triton.__version__)"
 
+echo -e "========================================================================="
+echo -e "CI Torchbench test Begin"
+echo -e "========================================================================="
 cd ${WORKSPACE_FOLDER}
 # Torchbench
 conda install -y git-lfs pyyaml pandas scipy psutil
@@ -48,6 +51,6 @@ python install.py
 pip install -e .
 
 cd /workspace/pytorch
-bash inductor_xpu_test.sh torchbench amp_fp16 inference accuracy xpu 3 & wait
+bash inductor_xpu_test.sh torchbench amp_fp16 inference accuracy xpu 3
 
 cp -r /workspace/pytorch/inductor_log /workspace/jenkins/logs
