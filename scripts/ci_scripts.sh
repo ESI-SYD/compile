@@ -19,7 +19,7 @@ echo -e "CI HF test Begin"
 echo -e "========================================================================="
 pip install tokenizers==0.13 pandas
 bash inductor_xpu_test.sh huggingface amp_bf16 training accuracy xpu 3
-
+cp -r /workspace/pytorch/inductor_log /workspace/jenkins/logs
 python -c "import triton;print(triton.__version__)"
 
 echo -e "========================================================================="
@@ -50,6 +50,7 @@ fi
 
 # git checkout ${TORCH_BENCH_PIN_COMMIT}
 cd benchmark
+git checkout fb0dfed4c8c8ab1c9816b02832f7a99d86ee4ca5
 python install.py
 pip install -e .
 

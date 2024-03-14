@@ -55,17 +55,28 @@ node(env.nodes_label){
             println('================================================================')
             println('CI-Test')
             println('================================================================')
-                sh'''
-                set -e
-                set +x
-                if [ ${TRITON_VERSION} == "210"];then
-                    docker exec -i spirv-210-${CONTAINER} bash -c "wget https://raw.githubusercontent.com/ESI-SYD/compile/ruijie/add_docker_groovy/scripts/ci_scripts.sh; \
-                    bash ci_scripts.sh"
-                else
-                    docker exec -i llvm-target-${CONTAINER} bash -c "wget https://raw.githubusercontent.com/ESI-SYD/compile/ruijie/add_docker_groovy/scripts/ci_scripts.sh; \
-                    bash ci_scripts.sh"
-                fi
-                '''
+                try{
+                    sh'''
+                    set -e
+                    set +x
+                    if [ ${TRITON_VERSION} == "210"];then
+                        docker exec -i spirv-210-${CONTAINER} bash -c "wget https://raw.githubusercontent.com/ESI-SYD/compile/ruijie/add_docker_groovy/scripts/ci_scripts.sh; \
+                        bash ci_scripts.sh"
+                    else
+                        docker exec -i llvm-target-${CONTAINER} bash -c "wget https://raw.githubusercontent.com/ESI-SYD/compile/ruijie/add_docker_groovy/scripts/ci_scripts.sh; \
+                        bash ci_scripts.sh"
+                    fi
+                    '''
+                }catch (Exception e) {
+                    println('================================================================')
+                    println('Exception')
+                    println('================================================================')v
+                    println(e.toString())
+                }finally {
+                    dir("${WORKSPACE}/logs") {
+                        archiveArtifacts '**'
+                    }//dir
+                }//finally
         }
     }else{
         stage('Performance-Test') {
