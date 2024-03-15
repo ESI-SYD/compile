@@ -12,9 +12,17 @@ def report(){
         echo err.getMessage()
     }
 }
-
+def cleanup(){
+        sh '''
+            cd ${WORKSPACE}
+            echo -e "begin to clean the workspace"
+            sudo rm -rf ../IPEX-TorchInductor-XPU-Backend-CI_ws-cleanup*
+            echo -e "finish cleaning the workspace"
+        '''
+}
 node(env.nodes_label){
     cleanWs()
+    cleanup()
     stage('setup env') {
         println('================================================================')
         println('setup nodes env')
