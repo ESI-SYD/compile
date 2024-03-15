@@ -61,8 +61,9 @@ if [ "$TEST_SUITE" == "torchbench" ] || [ "$TEST_SUITE" == "all" ]; then
         git clone --recursive https://github.com/weishi-deng/benchmark
     fi
 
-    # git checkout ${TORCH_BENCH_PIN_COMMIT}
     cd benchmark
+    # latest commit will include an issue that change to use CUDA version torch and triton version
+    git checkout fb0dfed4c8c8ab1c9816b02832f7a99d86ee4ca5
     python install.py
     pip install -e .
     # run torchbench benchmark
