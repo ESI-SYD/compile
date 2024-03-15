@@ -1,6 +1,7 @@
 WORKSPACE_FOLDER=/workspace
 cd /workspace/pytorch
 source /opt/intel/oneapi/setvars.sh
+export HUGGING_FACE_HUB_TOKEN=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
 
 if [ -e /workspace/pytorch/inductor_xpu_test.sh ];then
     echo -e "inductor_xpu_test.sh ready"
