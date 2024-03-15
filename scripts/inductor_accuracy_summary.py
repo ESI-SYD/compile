@@ -1,4 +1,4 @@
-## python inductor_accuracy_summary.py -t TRITON_v3.0 -r TRITON_v2.1 -p amp_bf16 amp_fp16 -s huggingface
+## python inductor_accuracy_summary.py -t TRITON_v3.0 -r TRITON_v2.1 -p amp_bf16 amp_fp16 bfloat16 float16 float32 -s torchbench
 import argparse
 import pandas as pd
 from scipy.stats import gmean

@@ -1,3 +1,4 @@
+# usage: python inductor_perf_summary.py -s huggingface -p amp_bf16 amp_fp16 bfloat16 float16 float32 -t TRITON_v3.0 -r TRITON_v2.1
 import argparse
 
 import pandas as pd
@@ -8,6 +9,7 @@ parser = argparse.ArgumentParser(description="Generate report")
 parser.add_argument('-s', '--suite', default='huggingface', choices=["torchbench", "huggingface", "timm_models"], type=str, help='model suite name')
 parser.add_argument('-p', '--precision', default='amp_bf16 amp_fp16', nargs='*', type=str, help='precision')
 parser.add_argument('-r', '--reference', type=str, help='reference log files')
+parser.add_argument('-t', '--target', type=str, help='target log files')
 parser.add_argument('--html_off', action='store_true', help='turn off html file generate')
 args = parser.parse_args()
 
@@ -65,7 +67,7 @@ def validate_csv_files(csv_file):
         return False
 
 def get_perf_csv(precision, mode):
-    target_path = 'inductor_log/' + args.suite + '/' + precision + '/inductor_' + args.suite + '_' + precision + '_' + mode + '_xpu_performance.csv'
+    target_path = args.target + '/inductor_log/' + args.suite + '/' + precision + '/inductor_' + args.suite + '_' + precision + '_' + mode + '_xpu_performance.csv'
     target_data = pd.DataFrame()
     if validate_csv_files(target_path):
         target_ori_data = pd.read_csv(target_path)
@@ -461,7 +463,7 @@ def html_generate(html_off):
 
 
 if __name__ == '__main__':
-    excel = StyleFrame.ExcelWriter('inductor_log/' + str(args.suite) + '/Inductor_' + args.suite + '_E2E_Test_Report.xlsx')
+    excel = StyleFrame.ExcelWriter(args.target + '/inductor_log/' + str(args.suite) + '/Inductor_' + args.suite + '_E2E_Test_Report.xlsx')
     generate_report(excel, args.precision)
     excel_postprocess(excel, args.precision)
     html_generate(args.html_off)
