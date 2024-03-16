@@ -39,13 +39,9 @@ echo "==============================="
 echo "CLEANNING CONTAINERS..."
 echo "==============================="
 # clean container
-if [[ -n "$(docker ps -a | grep llvm-target | awk '{print $1}')" ]]; then
-    docker stop $(docker ps -a | grep llvm-target | awk '{print $1}')
-    docker rm $(docker ps -a | grep llvm-target | awk '{print $1}')
-fi
-if [[ -n "$(docker ps -a | grep spirv-210 | awk '{print $1}')" ]]; then
-    docker stop $(docker ps -a | grep spirv-210 | awk '{print $1}')
-    docker rm $(docker ps -a | grep spirv-210 | awk '{print $1}')
+if [[ -n "$(docker ps -a | grep $CONTAINER_NAME | awk '{print $1}')" ]]; then
+    docker stop $(docker ps -a | grep $CONTAINER_NAME | awk '{print $1}')
+    docker rm $(docker ps -a | grep $CONTAINER_NAME | awk '{print $1}')
 fi
 
 echo "==============================="
