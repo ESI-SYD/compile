@@ -15,6 +15,7 @@ RUN apt-get update && \
     git \
     gnupg2 \
     gpg-agent \
+    libgl1-mesa-glx \
     libsm6 \
     libxext6 \
     pybind11-dev \
