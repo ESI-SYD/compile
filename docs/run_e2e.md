@@ -2,7 +2,8 @@
 
 #1. docker env 
 ```
-cd scripts
+git clone https://github.com/ESI-SYD/compile.git
+cd compile/scripts
 3.0: bash build-in-docker.sh
 2.1: bash build-in-docker.sh 210
 ```
