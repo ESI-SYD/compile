@@ -61,3 +61,33 @@ cd /workspace/pytorch
 bash inductor_xpu_test.sh torchbench amp_fp16 inference accuracy xpu 3
 
 cp -r /workspace/pytorch/inductor_log /workspace/jenkins/logs
+
+echo -e "========================================================================="
+echo -e "accuracy results check"
+echo -e "========================================================================="
+
+cd /workspace/pytorch/inductor_log/huggingface
+cd amp_bf16
+echo -e "============ Acc Check for HF amp_bf16 Training ============" | tee -a /workspace/jenkins/logs/e2e_summary.log
+csv_lines_train=$(cat inductor_huggingface_amp_bf16_training_xpu_accuracy.csv | wc -l)
+let num_total_amp_bf16=csv_lines_train-1
+echo "num_total_amp_bf16: $num_total_amp_bf16" | tee -a /workspace/jenkins/logs/e2e_summary.log
+num_passed_amp_bf16_tra=$(grep "pass" inductor_huggingface_amp_bf16_training_xpu_accuracy.csv | wc -l)
+let num_failed_amp_bf16_tra=num_total_amp_bf16-num_passed_amp_bf16_tra
+amp_bf16_tra_acc_pass_rate=`awk 'BEGIN{printf "%.2f%%",('$num_passed_amp_bf16_tra'/'$num_total_amp_bf16')*100}'`
+echo "num_passed_amp_bf16_tra: $num_passed_amp_bf16_tra" | tee -a /workspace/jenkins/logs/e2e_summary.log
+echo "num_failed_amp_bf16_tra: $num_failed_amp_bf16_tra" | tee -a /workspace/jenkins/logs/e2e_summary.log
+echo "amp_bf16_tra_acc_pass_rate: $amp_bf16_tra_acc_pass_rate" | tee -a /workspace/jenkins/logs/e2e_summary.log
+
+cd /workspace/pytorch/inductor_log/huggingface
+cd amp_fp16
+echo -e "============ Acc Check for torchbench amp_fp16 ============" | tee -a /workspace/jenkins/logs/e2e_summary.log
+csv_lines_inf=$(cat inductor_torchbench_amp_fp16_inference_xpu_accuracy.csv | wc -l)
+let num_total_amp_fp16=csv_lines_inf-1
+num_passed_amp_fp16_inf=$(grep "pass" inductor_torchbench_amp_fp16_inference_xpu_accuracy.csv | wc -l)
+let num_failed_amp_fp16_inf=num_total_amp_fp16-num_passed_amp_fp16_inf
+amp_fp16_inf_acc_pass_rate=`awk 'BEGIN{printf "%.2f%%",('$num_passed_amp_fp16_inf'/'$num_total_amp_fp16')*100}'`
+echo "num_total_amp_fp16: $num_total_amp_fp16" | tee -a /workspace/jenkins/logs/e2e_summary.log
+echo "num_passed_amp_fp16_inf: $num_passed_amp_fp16_inf" | tee -a /workspace/jenkins/logs/e2e_summary.log
+echo "num_failed_amp_fp16_inf: $num_failed_amp_fp16_inf" | tee -a /workspace/jenkins/logs/e2e_summary.log
+echo "amp_fp16_inf_acc_pass_rate: $amp_fp16_inf_acc_pass_rate" | tee -a /workspace/jenkins/logs/e2e_summary.log
