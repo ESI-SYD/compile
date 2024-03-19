@@ -67,6 +67,7 @@ echo "==============================="
 docker run -id --name ${CONTAINER_NAME} \
                --privileged \
                -v ${WORKSPACE}:/workspace/jenkins \
+               -v ~/.cache:/root/.cache \
                --env https_proxy=${https_proxy} \
                --env http_proxy=${http_proxy} \
                --net host \
