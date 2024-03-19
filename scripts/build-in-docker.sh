@@ -30,7 +30,6 @@ if [[ -n "$(docker ps -a | grep spirv-210 | awk '{print $1}')" ]]; then
     docker rm $(docker ps -a | grep spirv-210 | awk '{print $1}')
 fi
 # clean up
-docker stop $(docker ps -aq)
 docker rm $(docker ps -aq)
 docker rmi $(docker images -q)
 docker system prune -af
