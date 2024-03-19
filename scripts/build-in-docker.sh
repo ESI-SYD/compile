@@ -17,6 +17,24 @@ else
     CONTAINER_NAME="llvm-target-${CONTAINER}"
 fi
 
+echo "==============================="
+echo "CLEANNING CONTAINERS..."
+echo "==============================="
+# clean container
+if [[ -n "$(docker ps -a | grep llvm-target | awk '{print $1}')" ]]; then
+    docker stop $(docker ps -a | grep llvm-target | awk '{print $1}')
+    docker rm $(docker ps -a | grep llvm-target | awk '{print $1}')
+fi
+if [[ -n "$(docker ps -a | grep spirv-210 | awk '{print $1}')" ]]; then
+    docker stop $(docker ps -a | grep spirv-210 | awk '{print $1}')
+    docker rm $(docker ps -a | grep spirv-210 | awk '{print $1}')
+fi
+# clean up
+docker stop $(docker ps -aq)
+docker rm $(docker ps -aq)
+docker rmi $(docker images -q)
+docker system prune -af
+
 # print
 echo "==============================="
 echo "CONTAINER_NAME: ${CONTAINER_NAME}"
@@ -41,19 +59,6 @@ DOCKER_BUILDKIT=1 docker build --build-arg https_proxy=${https_proxy} \
                                --build-arg Basekit_url=${Basekit_url} \
                                -t ${IMAHE_NAME} \
                                -f ../docker/${DOCKERFILE_NAME} .
-
-echo "==============================="
-echo "CLEANNING CONTAINERS..."
-echo "==============================="
-# clean container
-if [[ -n "$(docker ps -a | grep llvm-target | awk '{print $1}')" ]]; then
-    docker stop $(docker ps -a | grep llvm-target | awk '{print $1}')
-    docker rm $(docker ps -a | grep llvm-target | awk '{print $1}')
-fi
-if [[ -n "$(docker ps -a | grep spirv-210 | awk '{print $1}')" ]]; then
-    docker stop $(docker ps -a | grep spirv-210 | awk '{print $1}')
-    docker rm $(docker ps -a | grep spirv-210 | awk '{print $1}')
-fi
 
 echo "==============================="
 echo "CREATE CONTAINER..."

@@ -71,6 +71,15 @@ RUN curl -fsSL -v -k -o ~/miniconda.sh -O https://repo.anaconda.com/miniconda/Mi
     # Fix GLIBCXX version issue
     rm -f /opt/conda/lib/libstdc++.so.6
 
+## PINS commits for triton v2.1 due to bad support for it in private PT
+# pytorch branch:  dev/triton-test-3.0
+# pytorch commit:  7c1c58ccac5650c76eee745ee77bbe33577165d9
+# intel-extension-for-pytorch branch:  dev/triton-test-3.0
+# intel-extension-for-pytorch commit:  4df9e1feeedcc312402b20f6c7fa4637be16bea2
+# benchmark branch:  main
+# benchmark commit:  fb0dfed4c8c8ab1c9816b02832f7a99d86ee4ca5
+####################################################################
+
 FROM dev-base AS build
 ARG torch_repo
 ARG torch_branch
