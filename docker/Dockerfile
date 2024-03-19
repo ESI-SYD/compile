@@ -74,6 +74,7 @@ ARG torch_commit
 ARG ipex_repo
 ARG ipex_branch
 ARG ipex_commit
+ARG triton_commit
 
 COPY --from=conda /opt/conda /opt/conda
 WORKDIR /workspace
@@ -88,7 +89,7 @@ RUN git clone -b ${torch_branch} ${torch_repo} && \
     . /opt/intel/oneapi/setvars.sh && \
     cd ipex && pip install -r requirements.txt && python setup.py develop && cd .. && \
     git clone https://github.com/intel/intel-xpu-backend-for-triton.git -b llvm-target && \
-    cd intel-xpu-backend-for-triton && scripts/compile-triton.sh
+    cd intel-xpu-backend-for-triton && git checkout ${triton_commit} && scripts/compile-triton.sh
 
 FROM dev-base AS image
 COPY --from=build /opt/conda /opt/conda
