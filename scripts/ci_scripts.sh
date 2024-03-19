@@ -79,7 +79,7 @@ echo "num_passed_amp_bf16_tra: $num_passed_amp_bf16_tra" | tee -a /workspace/jen
 echo "num_failed_amp_bf16_tra: $num_failed_amp_bf16_tra" | tee -a /workspace/jenkins/logs/e2e_summary.log
 echo "amp_bf16_tra_acc_pass_rate: $amp_bf16_tra_acc_pass_rate" | tee -a /workspace/jenkins/logs/e2e_summary.log
 
-cd /workspace/pytorch/inductor_log/huggingface
+cd /workspace/pytorch/inductor_log/torchbench
 cd amp_fp16
 echo -e "============ Acc Check for torchbench amp_fp16 ============" | tee -a /workspace/jenkins/logs/e2e_summary.log
 csv_lines_inf=$(cat inductor_torchbench_amp_fp16_inference_xpu_accuracy.csv | wc -l)
