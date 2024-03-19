@@ -1,5 +1,6 @@
 cd /workspace/pytorch
 source /opt/intel/oneapi/setvars.sh
+export HUGGING_FACE_HUB_TOKEN=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
 
 if [ -e /workspace/pytorch/inductor_xpu_test.sh ];then
     echo -e "inductor_xpu_test.sh ready"
@@ -45,6 +46,8 @@ bash inductor_xpu_test.sh timm_models float32 training performance xpu 1 & wait
 echo -e "========================================================================="
 echo -e "torchbench performance"
 echo -e "========================================================================="
+pip install transformers==4.38.1 --no-deps
+pip install timm==0.9.7 --no-deps
 pip install tqdm pandas pyre-extensions torchrec tensorboardX dalle2_pytorch torch_geometric scikit-image matplotlib  gym fastNLP doctr matplotlib opacus python-doctr higher opacus dominate kaldi-io librosa effdet pycocotools diffusers
 pip uninstall -y pyarrow pandas
 pip install pyarrow pandas
