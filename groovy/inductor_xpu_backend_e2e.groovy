@@ -113,14 +113,24 @@ node(env.nodes_label){
                     set -e
                     set +x
                     if [ ${TRITON_VERSION} == "210"];then
-                        docker exec -i spirv-210-${CONTAINER} bash -c "cd /workspace/pytorch; \
+                        docker exec -i spirv-210-${CONTAINER} bash -c " cd /workspace; \
+                        mkdir -p refer; \ 
+                        cp -r inductor_log refer; \
+                        rm -rf inductor_log; \
+                        mv refer /workspace/pytorch; \
+                        cd /workspace/pytorch; \
                         wget https://raw.githubusercontent.com/ESI-SYD/compile/main/scripts/inductor_perf_summary.py; \
                         python inductor_perf_summary.py -r refer -p amp_bf16 amp_fp16 bfloat16 float16 float32; \
                         python inductor_perf_summary.py -r refer -p amp_bf16 amp_fp16 bfloat16 float16 float32 -s timm_models; \
                         python inductor_perf_summary.py -r refer -p amp_bf16 amp_fp16 bfloat16 float16 float32 -s torchbench; \
                         cp -r /workspace/pytorch/inductor_log /workspace/jenkins/logs"
                     else
-                        docker exec -i llvm-target-${CONTAINER} bash -c "cd /workspace/pytorch; \
+                        docker exec -i llvm-target-${CONTAINER} bash -c " cd /workspace; \
+                        mkdir -p refer; \ 
+                        cp -r inductor_log refer; \
+                        rm -rf inductor_log; \
+                        mv refer /workspace/pytorch; \
+                        cd /workspace/pytorch; \
                         wget https://raw.githubusercontent.com/ESI-SYD/compile/main/scripts/inductor_perf_summary.py; \
                         python inductor_perf_summary.py -r refer -p amp_bf16 amp_fp16 bfloat16 float16 float32; \
                         python inductor_perf_summary.py -r refer -p amp_bf16 amp_fp16 bfloat16 float16 float32 -s timm_models; \
@@ -150,7 +160,7 @@ node(env.nodes_label){
                     docker exec -i spirv-210-${CONTAINER} bash -c "wget https://raw.githubusercontent.com/ESI-SYD/compile/ruijie/add_docker_groovy/scripts/accuracy_scripts.sh; \
                     bash accuracy_scripts.sh"
                 else
-                    docker exec -i llvm-target-${CONTAINER} bash -c "wget https://raw.githubusercontent.com/ESI-SYD/compile/ruijie/add_docker_groovy/scripts/accuracy_scripts.sh; \
+                    docker exec -i spirv-210-${CONTAINER} bash -c "wget https://raw.githubusercontent.com/ESI-SYD/compile/ruijie/add_docker_groovy/scripts/accuracy_scripts.sh; \
                     bash accuracy_scripts.sh"
                 fi
                 '''
@@ -167,11 +177,27 @@ node(env.nodes_label){
                     if [ ${TRITON_VERSION} == "210"];then
                         docker exec -i spirv-210-${CONTAINER} bash -c "cd /workspace/pytorch; \
                         wget https://raw.githubusercontent.com/ESI-SYD/compile/ruijie/add_docker_groovy/scripts/inductor_accuracy_results_check.sh; \
-                        bash inductor_accuracy_results_check.sh"
+                        bash inductor_accuracy_results_check.sh; \
+                        cd /workspace/pytorch; \
+                        mkdir -p target; \
+                        cp -r /workspace/pytorch/inductor_log /workspace/pytorch/target; \
+                        wget https://raw.githubusercontent.com/ESI-SYD/compile/main/scripts/inductor_accuracy_summary.py; \
+                        python inductor_accuracy_summary.py -r refer -t target -p amp_bf16 amp_fp16 bfloat16 float16 float32; \
+                        python inductor_accuracy_summary.py -r refer -t target -p amp_bf16 amp_fp16 bfloat16 float16 float32 -s timm_models; \
+                        python inductor_accuracy_summary.py -r refer -t target -p amp_bf16 amp_fp16 bfloat16 float16 float32 -s torchbench; \
+                        cp -r /workspace/pytorch/target /workspace/jenkins/logs"
                     else
                         docker exec -i llvm-target-${CONTAINER} bash -c "cd /workspace/pytorch; \
                         wget https://raw.githubusercontent.com/ESI-SYD/compile/ruijie/add_docker_groovy/scripts/inductor_accuracy_results_check.sh; \
-                        bash inductor_accuracy_results_check.sh"
+                        bash inductor_accuracy_results_check.sh; \
+                        cd /workspace/pytorch; \
+                        mkdir -p target; \
+                        cp -r /workspace/pytorch/inductor_log /workspace/pytorch/target; \
+                        wget https://raw.githubusercontent.com/ESI-SYD/compile/main/scripts/inductor_accuracy_summary.py; \
+                        python inductor_accuracy_summary.py -r refer -t target -p amp_bf16 amp_fp16 bfloat16 float16 float32; \
+                        python inductor_accuracy_summary.py -r refer -t target -p amp_bf16 amp_fp16 bfloat16 float16 float32 -s timm_models; \
+                        python inductor_accuracy_summary.py -r refer -t target -p amp_bf16 amp_fp16 bfloat16 float16 float32 -s torchbench; \
+                        cp -r /workspace/pytorch/target /workspace/jenkins/logs"
                     fi
                     '''
                 }catch (Exception e) {
