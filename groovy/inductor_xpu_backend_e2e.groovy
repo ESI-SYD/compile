@@ -113,8 +113,8 @@ node(env.nodes_label){
                     set -e
                     set +x
                     if [ ${TRITON_VERSION} == "210"];then
-                        docker exec -i spirv-210-${CONTAINER} bash -c " cd /workspace; \
-                        mkdir -p refer; \ 
+                        docker exec -i spirv-210-${CONTAINER} bash -c "cd /workspace; \
+                        mkdir -p refer; \
                         cp -r inductor_log refer; \
                         rm -rf inductor_log; \
                         mv refer /workspace/pytorch; \
@@ -125,8 +125,8 @@ node(env.nodes_label){
                         python inductor_perf_summary.py -r refer -p amp_bf16 amp_fp16 bfloat16 float16 float32 -s torchbench; \
                         cp -r /workspace/pytorch/inductor_log /workspace/jenkins/logs"
                     else
-                        docker exec -i llvm-target-${CONTAINER} bash -c " cd /workspace; \
-                        mkdir -p refer; \ 
+                        docker exec -i llvm-target-${CONTAINER} bash -c "cd /workspace; \
+                        mkdir -p refer; \
                         cp -r inductor_log refer; \
                         rm -rf inductor_log; \
                         mv refer /workspace/pytorch; \
