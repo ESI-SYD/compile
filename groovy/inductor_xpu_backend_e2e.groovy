@@ -160,7 +160,7 @@ node(env.nodes_label){
                     docker exec -i spirv-210-${CONTAINER} bash -c "wget https://raw.githubusercontent.com/ESI-SYD/compile/ruijie/add_docker_groovy/scripts/accuracy_scripts.sh; \
                     bash accuracy_scripts.sh"
                 else
-                    docker exec -i spirv-210-${CONTAINER} bash -c "wget https://raw.githubusercontent.com/ESI-SYD/compile/ruijie/add_docker_groovy/scripts/accuracy_scripts.sh; \
+                    docker exec -i llvm-target-${CONTAINER} bash -c "wget https://raw.githubusercontent.com/ESI-SYD/compile/ruijie/add_docker_groovy/scripts/accuracy_scripts.sh; \
                     bash accuracy_scripts.sh"
                 fi
                 '''
