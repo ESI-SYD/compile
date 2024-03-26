@@ -1,3 +1,4 @@
+WORKSPACE_FOLDER=/workspace
 cd /workspace/pytorch
 source /opt/intel/oneapi/setvars.sh
 export HUGGING_FACE_HUB_TOKEN=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
@@ -13,7 +14,7 @@ if [ ${TRITON_VERSION} == "210" ];then
 else
     echo -e "No need to set flag for triton3.0"
 fi
-pip install tokenizers==0.13
+pip install tokenizers==0.13 tqdm pandas scipy
 mkdir -p /workspace/jenkins/logs
 echo -e "========================================================================="
 echo -e "huggingface performance"
@@ -60,6 +61,17 @@ pushd multimodal
 pip install -e .
 popd
 
+if [ ! -d "${WORKSPACE_FOLDER}/benchmark" ]; then
+    git clone --recursive https://github.com/weishi-deng/benchmark
+fi
+
+# git checkout ${TORCH_BENCH_PIN_COMMIT}
+cd benchmark
+git checkout fb0dfed4c8c8ab1c9816b02832f7a99d86ee4ca5
+python install.py
+pip install -e .
+
+cd /workspace/pytorch
 bash inductor_xpu_test.sh torchbench amp_bf16 inference performance xpu 0 & \
 bash inductor_xpu_test.sh torchbench amp_bf16 training performance xpu 1 & \
 bash inductor_xpu_test.sh torchbench amp_fp16 inference performance xpu 2 & \
