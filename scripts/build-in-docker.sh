@@ -2,7 +2,10 @@
 set -e
 
 # parameters
-TRITON_VERSION=${1:-}
+TRITON_VERSION=${1:-latest}
+TRITON_COMMIT=${2:-latest}
+PT_COMMIT=${3:-pins}
+IPEX_COMMIT=${4:-pins}
 
 # determine target
 DOCKERFILE_NAME=""
@@ -24,17 +27,29 @@ echo "DOCKERFILE_NAME: ${DOCKERFILE_NAME}"
 echo "IMAHE_NAME: ${IMAHE_NAME}"
 echo "CONTAINER_NAME : ${CONTAINER_NAME}"
 echo "TRITON_VERSION : ${TRITON_VERSION}"
+echo "TRITON_COMMIT : ${TRITON_COMMIT}"
+echo "PT_COMMIT : ${PT_COMMIT}"
+echo "IPEX_COMMIT : ${IPEX_COMMIT}"
 echo "==============================="
 
 echo "==============================="
 echo "BUIDINGING IMAGE: ${IMAGE_NAME} ..."
 echo "==============================="
 # build image
-DOCKER_BUILDKIT=1 docker build --build-arg https_proxy=${https_proxy} \
-                               --build-arg http_proxy=${http_proxy} \
-                               -t ${IMAHE_NAME} \
-                               -f ../docker/${DOCKERFILE_NAME} .
-
+if [[ $TRITON_VERSION == "210" ]]; then
+    DOCKER_BUILDKIT=1 docker build --build-arg https_proxy=${https_proxy} \
+                                   --build-arg http_proxy=${http_proxy} \
+                                   -t ${IMAHE_NAME} \
+                                   -f ../docker/${DOCKERFILE_NAME} .
+else
+    DOCKER_BUILDKIT=1 docker build --build-arg TRITON_COMMIT=${TRITON_COMMIT} \
+                                   --build-arg PT_COMMIT=${PT_COMMIT} \
+                                   --build-arg IPEX_COMMIT=${IPEX_COMMIT} \
+                                   --build-arg https_proxy=${https_proxy} \
+                                   --build-arg http_proxy=${http_proxy} \
+                                   -t ${IMAHE_NAME} \
+                                   -f ../docker/${DOCKERFILE_NAME} .
+fi
 echo "==============================="
 echo "CLEANNING CONTAINERS..."
 echo "==============================="

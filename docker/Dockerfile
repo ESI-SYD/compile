@@ -65,21 +65,25 @@ RUN curl -fsSL -v -k -o ~/miniconda.sh -O https://repo.anaconda.com/miniconda/Mi
     /opt/conda/bin/conda clean -ya && \
     # Fix GLIBCXX version issue
     rm -f /opt/conda/lib/libstdc++.so.6
-# pt and ipex
+# PT and IPEX
 FROM dev-base AS build
+ARG TRITON_COMMIT=latest
+ARG PT_COMMIT=pins
+ARG IPEX_COMMIT=pins
 COPY --from=conda /opt/conda /opt/conda
 WORKDIR /workspace
-RUN git clone https://github.com/Stonepia/pytorch.git -b dev/triton-test-3.0 && \
-    cd pytorch && git checkout c9153c96f547f269581743e7443aa86d7e003505 && \
+RUN git clone https://github.com/intel/intel-xpu-backend-for-triton.git -b llvm-target && \
+    cd intel-xpu-backend-for-triton && if [ "${TRITON_COMMIT}" = "latest" ]; then git pull; else git checkout ${TRITON_COMMIT}; fi && cd .. && \
+    git clone https://github.com/Stonepia/pytorch.git -b dev/triton-test-3.0 && \
+    cd pytorch && if [ "${PT_COMMIT}" = "pins" ]; then git checkout `cat /workspace/intel-xpu-backend-for-triton/.github/pins/pytorch.txt`; else git checkout ${PT_COMMIT}; fi && \
     pip install pyyaml && pip install -r requirements.txt && \
     git submodule sync && git submodule update --init --recursive && \
     python setup.py develop && cd .. && \
     git clone https://github.com/intel/intel-extension-for-pytorch.git -b dev/triton-test-3.0 ipex && \
-    cd ipex && git checkout faadb009c12ed4fb3133db9a10020726016b3d24 && git submodule sync && \
-    git submodule update --init --recursive && cd .. && \
+    cd ipex && if [ "${IPEX_COMMIT}" = "pins" ]; then git checkout `cat /workspace/intel-xpu-backend-for-triton/.github/pins/ipex.txt`; else git checkout ${IPEX_COMMIT}; fi && \
+    git submodule sync && git submodule update --init --recursive && cd .. && \
     . /opt/intel/oneapi/setvars.sh && \
     cd ipex && pip install -r requirements.txt && python setup.py develop && cd .. && \
-    git clone https://github.com/intel/intel-xpu-backend-for-triton.git -b llvm-target && \
     cd intel-xpu-backend-for-triton && scripts/compile-triton.sh
 
 FROM dev-base AS image
