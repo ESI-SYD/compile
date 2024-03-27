@@ -5,7 +5,11 @@ TEST_MODE=${2:-performance}
 
 # activate oneapi
 source /opt/intel/oneapi/setvars.sh
-
+rm -rf /tmp/torchinductor*
+# Problem: The profiled data on GPU operators using legacy profiler is not accurate sometimes.
+# Cause: Compiler in 2024.0 oneAPI basekit optimizes barrier implementation which brings negative impact on legacy profiler.
+# Solution: Use Kineto profiler instead. Or use legacy profiler with export UR_L0_IN_ORDER_BARRIER_BY_SIGNAL=0 to workaround this issue.
+export UR_L0_IN_ORDER_BARRIER_BY_SIGNAL=0
 # prepare to run the benchmark
 cd /workspace/pytorch
 wget https://raw.githubusercontent.com/intel/intel-xpu-backend-for-triton/scripts/inductor_xpu_test.sh
