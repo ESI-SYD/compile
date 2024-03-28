@@ -114,6 +114,7 @@ node(env.nodes_label){
                     set +x
                     if [ ${TRITON_VERSION} == "210"];then
                         docker exec -i spirv-210-${CONTAINER} bash -c "cd /workspace; \
+                        pip install styleFrame scipy pandas; \
                         mkdir -p refer; \
                         cp -r inductor_log refer; \
                         rm -rf inductor_log; \
@@ -126,6 +127,7 @@ node(env.nodes_label){
                         cp -r /workspace/pytorch/inductor_log /workspace/jenkins/logs"
                     else
                         docker exec -i llvm-target-${CONTAINER} bash -c "cd /workspace; \
+                        pip install styleFrame scipy pandas; \
                         mkdir -p refer; \
                         cp -r inductor_log refer; \
                         rm -rf inductor_log; \
@@ -176,6 +178,7 @@ node(env.nodes_label){
                     set +x
                     if [ ${TRITON_VERSION} == "210"];then
                         docker exec -i spirv-210-${CONTAINER} bash -c "cd /workspace/pytorch; \
+                        pip install styleFrame scipy pandas; \
                         wget https://raw.githubusercontent.com/ESI-SYD/compile/ruijie/add_docker_groovy/scripts/inductor_accuracy_results_check.sh; \
                         bash inductor_accuracy_results_check.sh; \
                         cd /workspace/pytorch; \
@@ -188,6 +191,7 @@ node(env.nodes_label){
                         cp -r /workspace/pytorch/target /workspace/jenkins/logs"
                     else
                         docker exec -i llvm-target-${CONTAINER} bash -c "cd /workspace/pytorch; \
+                        pip install styleFrame scipy pandas; \
                         wget https://raw.githubusercontent.com/ESI-SYD/compile/ruijie/add_docker_groovy/scripts/inductor_accuracy_results_check.sh; \
                         bash inductor_accuracy_results_check.sh; \
                         cd /workspace/pytorch; \
