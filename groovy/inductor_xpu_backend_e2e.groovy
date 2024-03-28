@@ -112,13 +112,13 @@ node(env.nodes_label){
                     sh'''
                     set -e
                     set +x
+                    cd ${WORKSPACE}
+                    mkdir -p refer
+                    mv inductor_log refer
                     if [ ${TRITON_VERSION} == "210"];then
                         docker exec -i spirv-210-${CONTAINER} bash -c "cd /workspace; \
                         pip install styleFrame scipy pandas; \
-                        mkdir -p refer; \
-                        cp -r inductor_log refer; \
-                        rm -rf inductor_log; \
-                        mv refer /workspace/pytorch; \
+                        mv /workspace/jenkins/refer /workspace/pytorch; \
                         cd /workspace/pytorch; \
                         wget https://raw.githubusercontent.com/ESI-SYD/compile/main/scripts/inductor_perf_summary.py; \
                         python inductor_perf_summary.py -r refer -p amp_bf16 amp_fp16 bfloat16 float16 float32; \
@@ -128,10 +128,7 @@ node(env.nodes_label){
                     else
                         docker exec -i llvm-target-${CONTAINER} bash -c "cd /workspace; \
                         pip install styleFrame scipy pandas; \
-                        mkdir -p refer; \
-                        cp -r inductor_log refer; \
-                        rm -rf inductor_log; \
-                        mv refer /workspace/pytorch; \
+                        mv /workspace/jenkins/refer /workspace/pytorch; \
                         cd /workspace/pytorch; \
                         wget https://raw.githubusercontent.com/ESI-SYD/compile/main/scripts/inductor_perf_summary.py; \
                         python inductor_perf_summary.py -r refer -p amp_bf16 amp_fp16 bfloat16 float16 float32; \
