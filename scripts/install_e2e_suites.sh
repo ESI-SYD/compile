@@ -12,9 +12,9 @@ TORCH_AUDIO_PIN_COMMIT=`cat /workspace/pytorch/.github/ci_commit_pins/audio.txt`
 #pip install transformers==4.27.4
 
 # install timm
-pip install --no-deps git+https://github.com/huggingface/pytorch-image-models@$TIMM_COMMIT_ID
+#pip install --no-deps git+https://github.com/huggingface/pytorch-image-models@$TIMM_COMMIT_ID
 # install timm dependencies without torch and torchvision
-pip install $(curl -sSL https://raw.githubusercontent.com/huggingface/pytorch-image-models/$TIMM_COMMIT_ID/requirements.txt | grep -vE torch)
+#pip install $(curl -sSL https://raw.githubusercontent.com/huggingface/pytorch-image-models/$TIMM_COMMIT_ID/requirements.txt | grep -vE torch)
 
 # install torchbench
 
