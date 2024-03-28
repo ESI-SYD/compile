@@ -14,7 +14,8 @@ if [ ${TRITON_VERSION} == "210" ];then
 else
     echo -e "No need to set flag for triton3.0"
 fi
-pip install tokenizers==0.13 tqdm pandas scipy
+#pip install tokenizers==0.13 
+pip install tqdm pandas scipy
 mkdir -p /workspace/jenkins/logs
 echo -e "========================================================================="
 echo -e "huggingface performance"
@@ -33,6 +34,7 @@ bash inductor_xpu_test.sh huggingface float32 training performance xpu 1 & wait
 echo -e "========================================================================="
 echo -e "timm_models performance"
 echo -e "========================================================================="
+pip install --no-deps "git+https://github.com/rwightman/pytorch-image-models@b9d43c7dcac1fe05e851dd7be7187b108af593d2"
 bash inductor_xpu_test.sh timm_models amp_bf16 inference performance xpu 0 & \
 bash inductor_xpu_test.sh timm_models amp_bf16 training performance xpu 1 & \
 bash inductor_xpu_test.sh timm_models amp_fp16 inference performance xpu 2 & \
