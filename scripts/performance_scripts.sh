@@ -25,8 +25,8 @@ bash inductor_xpu_test.sh huggingface amp_bf16 training performance xpu 1 & \
 bash inductor_xpu_test.sh huggingface amp_fp16 inference performance xpu 2 & \
 bash inductor_xpu_test.sh huggingface amp_fp16 training performance xpu 3 & \
 bash inductor_xpu_test.sh huggingface bfloat16 inference performance xpu 4 & \
-bash inductor_xpu_test.sh huggingface bfloat16 training performance xpu 5 & \
-bash inductor_xpu_test.sh huggingface float16 inference performance xpu 6 & wait
+bash inductor_xpu_test.sh huggingface bfloat16 training performance xpu 6 & \
+bash inductor_xpu_test.sh huggingface float16 inference performance xpu 7 & wait
 bash inductor_xpu_test.sh huggingface float16 training performance xpu 0 & \
 bash inductor_xpu_test.sh huggingface float32 inference performance xpu 1 & \
 bash inductor_xpu_test.sh huggingface float32 training performance xpu 2 & wait
@@ -40,8 +40,8 @@ bash inductor_xpu_test.sh timm_models amp_bf16 training performance xpu 1 & \
 bash inductor_xpu_test.sh timm_models amp_fp16 inference performance xpu 2 & \
 bash inductor_xpu_test.sh timm_models amp_fp16 training performance xpu 3 & \
 bash inductor_xpu_test.sh timm_models bfloat16 inference performance xpu 4 & \
-bash inductor_xpu_test.sh timm_models bfloat16 training performance xpu 5 & \
-bash inductor_xpu_test.sh timm_models float16 inference performance xpu 6 & wait
+bash inductor_xpu_test.sh timm_models bfloat16 training performance xpu 6 & \
+bash inductor_xpu_test.sh timm_models float16 inference performance xpu 7 & wait
 bash inductor_xpu_test.sh timm_models float16 training performance xpu 0 & \
 bash inductor_xpu_test.sh timm_models float32 inference performance xpu 1 & \
 bash inductor_xpu_test.sh timm_models float32 training performance xpu 2 & wait
@@ -79,8 +79,8 @@ bash inductor_xpu_test.sh torchbench amp_bf16 training performance xpu 1 & \
 bash inductor_xpu_test.sh torchbench amp_fp16 inference performance xpu 2 & \
 bash inductor_xpu_test.sh torchbench amp_fp16 training performance xpu 3 & \
 bash inductor_xpu_test.sh torchbench bfloat16 inference performance xpu 4 & \
-bash inductor_xpu_test.sh torchbench bfloat16 training performance xpu 5 & \
-bash inductor_xpu_test.sh torchbench float16 inference performance xpu 6 & wait
+bash inductor_xpu_test.sh torchbench bfloat16 training performance xpu 6 & \
+bash inductor_xpu_test.sh torchbench float16 inference performance xpu 7 & wait
 bash inductor_xpu_test.sh torchbench float16 training performance xpu 0 & \
 bash inductor_xpu_test.sh torchbench float32 inference performance xpu 1 & \
 bash inductor_xpu_test.sh torchbench float32 training performance xpu 2 & wait
