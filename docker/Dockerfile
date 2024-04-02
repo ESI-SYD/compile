@@ -25,24 +25,27 @@ RUN apt-get update && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
-# gpu driver refer to 
-# https://dgpu-docs.intel.com/releases/LTS_803.29_20240131.html#ubuntu-22-04
+# gpu driver
+# refer to https://dgpu-docs.intel.com/releases/LTS_803.29_20240131.html#ubuntu-22-04
 RUN wget -qO - https://repositories.intel.com/gpu/intel-graphics.key | \
   gpg --dearmor --output /usr/share/keyrings/intel-graphics.gpg
 RUN echo "deb [arch=amd64 signed-by=/usr/share/keyrings/intel-graphics.gpg] https://repositories.intel.com/gpu/ubuntu jammy/lts/2350 unified" | \
   tee /etc/apt/sources.list.d/intel-gpu-jammy.list
 
-# latest public oneapi basekit refer to 2024.0.1
+# oneapi basekit
 # https://www.intel.com/content/www/us/en/developer/tools/oneapi/base-toolkit-download.html?operatingsystem=linux&distributions=aptpackagemanager
 RUN wget -O- https://apt.repos.intel.com/intel-gpg-keys/GPG-PUB-KEY-INTEL-SW-PRODUCTS.PUB \ | gpg --dearmor | \
 tee /usr/share/keyrings/oneapi-archive-keyring.gpg > /dev/null
 RUN echo "deb [signed-by=/usr/share/keyrings/oneapi-archive-keyring.gpg] https://apt.repos.intel.com/oneapi all main" | \
  tee /etc/apt/sources.list.d/oneAPI.list
 
-
+# intel-basekit | 2024.1.0-589
+# intel-basekit | 2024.0.1-43 
+# intel-basekit | 2024.0.0-49522
+ARG BASEKIT_VERSION=2024.1.0-589
 RUN apt-get update && \
     apt-get install -y --no-install-recommends --fix-missing \
-    intel-basekit \
+    intel-basekit=$BASEKIT_VERSION \
     intel-opencl-icd \
     clinfo \
     intel-level-zero-gpu \
@@ -50,7 +53,7 @@ RUN apt-get update && \
     level-zero-dev libigc-dev intel-igc-cm libigdfcl-dev libigfxcmrt-dev && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
-ENV PATH /opt/conda/bin:$PATH  
+ENV PATH /opt/conda/bin:$PATH
 
 FROM dev-base AS conda
 ARG PYTHON_VERSION=3.10
@@ -67,12 +70,13 @@ RUN curl -fsSL -v -k -o ~/miniconda.sh -O https://repo.anaconda.com/miniconda/Mi
     rm -f /opt/conda/lib/libstdc++.so.6
 # PT and IPEX
 FROM dev-base AS build
+ARG TRITON_BRANCH=llvm-target
 ARG TRITON_COMMIT=latest
 ARG PT_COMMIT=pins
 ARG IPEX_COMMIT=pins
 COPY --from=conda /opt/conda /opt/conda
 WORKDIR /workspace
-RUN git clone https://github.com/intel/intel-xpu-backend-for-triton.git -b llvm-target && \
+RUN git clone https://github.com/intel/intel-xpu-backend-for-triton.git -b ${TRITON_BRANCH} && \
     cd intel-xpu-backend-for-triton && if [ "${TRITON_COMMIT}" = "latest" ]; then git pull; else git checkout ${TRITON_COMMIT}; fi && cd .. && \
     git clone https://github.com/Stonepia/pytorch.git -b dev/triton-test-3.0 && \
     cd pytorch && if [ "${PT_COMMIT}" = "pins" ]; then git checkout `cat /workspace/intel-xpu-backend-for-triton/.github/pins/pytorch.txt`; else git checkout ${PT_COMMIT}; fi && \
