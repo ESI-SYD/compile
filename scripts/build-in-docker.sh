@@ -7,7 +7,7 @@ TRITON_BRANCH=${2:-llvm-target} # llvm-target / yudong/xetla_softmax
 TRITON_COMMIT=${3:-latest}
 PT_COMMIT=${4:-pins}
 IPEX_COMMIT=${5:-pins}
-BASEKIT_VERSION=${6:-2024.1.0-589} # 2024.1.0-589 / 2024.0.1-43
+BASEKIT_VERSION=${6:-2024.0.1}
 
 # determine target
 DOCKERFILE_NAME=""
@@ -22,18 +22,24 @@ else
     CONTAINER_NAME="llvm-target"
 fi
 
+if [[ $BASEKIT_VERSION == "2024.0.1" ]]; then
+    BASEKIT_URL="https://registrationcenter-download.intel.com/akdlm/IRC_NAS/163da6e4-56eb-4948-aba3-debcec61c064/l_BaseKit_p_2024.0.1.46_offline.sh"
+elif [[ $BASEKIT_VERSION == "2024.1.0" ]];then
+    BASEKIT_URL="https://registrationcenter-download.intel.com/akdlm/IRC_NAS/fdc7a2bc-b7a8-47eb-8876-de6201297144/l_BaseKit_p_2024.1.0.596_offline.sh"
+fi
+
+
 # print
 echo "==============================="
 echo "CONTAINER_NAME: ${CONTAINER_NAME}"
 echo "DOCKERFILE_NAME: ${DOCKERFILE_NAME}"
 echo "IMAHE_NAME: ${IMAHE_NAME}"
-echo "CONTAINER_NAME : ${CONTAINER_NAME}"
 echo "TRITON_VERSION : ${TRITON_VERSION}"
 echo "TRITON_BRANCH : ${TRITON_BRANCH}"
 echo "TRITON_COMMIT : ${TRITON_COMMIT}"
 echo "PT_COMMIT : ${PT_COMMIT}"
 echo "IPEX_COMMIT : ${IPEX_COMMIT}"
-echo "BASEKIT_VERSION : ${BASEKIT_VERSION}"
+echo "BASEKIT_URL : ${BASEKIT_URL}"
 echo "==============================="
 
 echo "==============================="
@@ -50,7 +56,7 @@ else
                                    --build-arg TRITON_BRANCH=${TRITON_BRANCH} \
                                    --build-arg PT_COMMIT=${PT_COMMIT} \
                                    --build-arg IPEX_COMMIT=${IPEX_COMMIT} \
-                                   --build-arg BASEKIT_VERSION=${BASEKIT_VERSION} \
+                                   --build-arg BASEKIT_URL=${BASEKIT_URL} \
                                    --build-arg https_proxy=${https_proxy} \
                                    --build-arg http_proxy=${http_proxy} \
                                    -t ${IMAHE_NAME} \
