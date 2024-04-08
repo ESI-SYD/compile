@@ -120,20 +120,20 @@ node(env.nodes_label){
                         pip install styleFrame scipy pandas; \
                         mv /workspace/jenkins/refer /workspace/pytorch; \
                         cd /workspace/pytorch; \
-                        wget https://raw.githubusercontent.com/ESI-SYD/compile/main/scripts/inductor_perf_summary.py; \
-                        python inductor_perf_summary.py -r refer -p amp_bf16 amp_fp16 bfloat16 float16 float32; \
-                        python inductor_perf_summary.py -r refer -p amp_bf16 amp_fp16 bfloat16 float16 float32 -s timm_models; \
-                        python inductor_perf_summary.py -r refer -p amp_bf16 amp_fp16 bfloat16 float16 float32 -s torchbench; \
+                        wget https://raw.githubusercontent.com/ESI-SYD/compile/ruijie/add_docker_groovy/scripts/inductor_perf_summary_with_regression_output.py; \
+                        python inductor_perf_summary_with_regression_output.py -r refer -p amp_bf16 amp_fp16 bfloat16 float16 float32; \
+                        python inductor_perf_summary_with_regression_output.py -r refer -p amp_bf16 amp_fp16 bfloat16 float16 float32 -s timm_models; \
+                        python inductor_perf_summary_with_regression_output.py -r refer -p amp_bf16 amp_fp16 bfloat16 float16 float32 -s torchbench; \
                         cp -r /workspace/pytorch/inductor_log /workspace/jenkins/logs"
                     else
                         docker exec -i llvm-target-${CONTAINER} bash -c "cd /workspace; \
                         pip install styleFrame scipy pandas; \
                         mv /workspace/jenkins/refer /workspace/pytorch; \
                         cd /workspace/pytorch; \
-                        wget https://raw.githubusercontent.com/ESI-SYD/compile/main/scripts/inductor_perf_summary.py; \
-                        python inductor_perf_summary.py -r refer -p amp_bf16 amp_fp16 bfloat16 float16 float32; \
-                        python inductor_perf_summary.py -r refer -p amp_bf16 amp_fp16 bfloat16 float16 float32 -s timm_models; \
-                        python inductor_perf_summary.py -r refer -p amp_bf16 amp_fp16 bfloat16 float16 float32 -s torchbench; \
+                        wget https://raw.githubusercontent.com/ESI-SYD/compile/ruijie/add_docker_groovy/scripts/inductor_perf_summary_with_regression_output.py; \
+                        python inductor_perf_summary_with_regression_output.py -r refer -p amp_bf16 amp_fp16 bfloat16 float16 float32; \
+                        python inductor_perf_summary_with_regression_output.py -r refer -p amp_bf16 amp_fp16 bfloat16 float16 float32 -s timm_models; \
+                        python inductor_perf_summary_with_regression_output.py -r refer -p amp_bf16 amp_fp16 bfloat16 float16 float32 -s torchbench; \
                         cp -r /workspace/pytorch/inductor_log /workspace/jenkins/logs"
                     fi
                     '''
