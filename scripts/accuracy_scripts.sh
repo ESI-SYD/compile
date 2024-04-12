@@ -20,13 +20,13 @@ echo -e "=======================================================================
 bash inductor_xpu_test.sh huggingface amp_bf16 inference accuracy xpu 0 & \
 bash inductor_xpu_test.sh huggingface amp_bf16 training accuracy xpu 1 & \
 bash inductor_xpu_test.sh huggingface amp_fp16 inference accuracy xpu 2 & \
-bash inductor_xpu_test.sh huggingface amp_fp16 training accuracy xpu 3 & \
-bash inductor_xpu_test.sh huggingface bfloat16 inference accuracy xpu 4 & \
-bash inductor_xpu_test.sh huggingface bfloat16 training accuracy xpu 5 & wait
-bash inductor_xpu_test.sh huggingface float16 inference accuracy xpu 0 & \
-bash inductor_xpu_test.sh huggingface float16 training accuracy xpu 1 & \
-bash inductor_xpu_test.sh huggingface float32 inference accuracy xpu 2 & \
-bash inductor_xpu_test.sh huggingface float32 training accuracy xpu 3 & wait
+bash inductor_xpu_test.sh huggingface amp_fp16 training accuracy xpu 3 & wait
+bash inductor_xpu_test.sh huggingface bfloat16 inference accuracy xpu 0 & \
+bash inductor_xpu_test.sh huggingface bfloat16 training accuracy xpu 1 & \
+bash inductor_xpu_test.sh huggingface float16 inference accuracy xpu 2 & \
+bash inductor_xpu_test.sh huggingface float16 training accuracy xpu 3 & \
+bash inductor_xpu_test.sh huggingface float32 inference accuracy xpu 0 & \
+bash inductor_xpu_test.sh huggingface float32 training accuracy xpu 1 & wait
 
 echo -e "========================================================================="
 echo -e "timm_models accuracy"
@@ -35,13 +35,13 @@ pip install --no-deps "git+https://github.com/rwightman/pytorch-image-models@b9d
 bash inductor_xpu_test.sh timm_models amp_bf16 inference accuracy xpu 0 & \
 bash inductor_xpu_test.sh timm_models amp_bf16 training accuracy xpu 1 & \
 bash inductor_xpu_test.sh timm_models amp_fp16 inference accuracy xpu 2 & \
-bash inductor_xpu_test.sh timm_models amp_fp16 training accuracy xpu 3 & \
-bash inductor_xpu_test.sh timm_models bfloat16 inference accuracy xpu 4 & \
-bash inductor_xpu_test.sh timm_models bfloat16 training accuracy xpu 5 & wait
-bash inductor_xpu_test.sh timm_models float16 inference accuracy xpu 0 & \
-bash inductor_xpu_test.sh timm_models float16 training accuracy xpu 1 & \
-bash inductor_xpu_test.sh timm_models float32 inference accuracy xpu 2 & \
-bash inductor_xpu_test.sh timm_models float32 training accuracy xpu 3 & wait
+bash inductor_xpu_test.sh timm_models amp_fp16 training accuracy xpu 3 & wait
+bash inductor_xpu_test.sh timm_models bfloat16 inference accuracy xpu 0 & \
+bash inductor_xpu_test.sh timm_models bfloat16 training accuracy xpu 1 & \
+bash inductor_xpu_test.sh timm_models float16 inference accuracy xpu 2 & \
+bash inductor_xpu_test.sh timm_models float16 training accuracy xpu 3 & \
+bash inductor_xpu_test.sh timm_models float32 inference accuracy xpu 0 & \
+bash inductor_xpu_test.sh timm_models float32 training accuracy xpu 1 & wait
 
 echo -e "========================================================================="
 echo -e "torchbench accuracy"
@@ -52,12 +52,12 @@ pip install timm==0.9.7 --no-deps
 bash inductor_xpu_test.sh torchbench amp_bf16 inference accuracy xpu 0 & \
 bash inductor_xpu_test.sh torchbench amp_bf16 training accuracy xpu 1 & \
 bash inductor_xpu_test.sh torchbench amp_fp16 inference accuracy xpu 2 & \
-bash inductor_xpu_test.sh torchbench amp_fp16 training accuracy xpu 3 & \
-bash inductor_xpu_test.sh torchbench bfloat16 inference accuracy xpu 4 & \
-bash inductor_xpu_test.sh torchbench bfloat16 training accuracy xpu 5 & wait
-bash inductor_xpu_test.sh torchbench float16 inference accuracy xpu 0 \
-bash inductor_xpu_test.sh torchbench float16 training accuracy xpu 1 & \
-bash inductor_xpu_test.sh torchbench float32 inference accuracy xpu 2 & \
-bash inductor_xpu_test.sh torchbench float32 training accuracy xpu 3 & wait
+bash inductor_xpu_test.sh torchbench amp_fp16 training accuracy xpu 3 & wait
+bash inductor_xpu_test.sh torchbench bfloat16 inference accuracy xpu 0 & \
+bash inductor_xpu_test.sh torchbench bfloat16 training accuracy xpu 1 & \
+bash inductor_xpu_test.sh torchbench float16 inference accuracy xpu 2 & \
+bash inductor_xpu_test.sh torchbench float16 training accuracy xpu 3 & wait
+bash inductor_xpu_test.sh torchbench float32 inference accuracy xpu 0 & \
+bash inductor_xpu_test.sh torchbench float32 training accuracy xpu 1 & wait
 
 cp -r /workspace/pytorch/inductor_log /workspace/jenkins/logs
