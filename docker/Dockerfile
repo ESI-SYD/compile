@@ -28,7 +28,6 @@ RUN apt-get update && \
   apt-get clean && \
   rm -rf /var/lib/apt/lists/*
 
-FROM dev-base AS build
 # https://www.intel.com/content/www/us/en/developer/articles/tool/pytorch-prerequisites-for-intel-gpu/2-5.html
 # Download the Intel APT repository’s public key and put it into the /usr/share/keyrings directory
 RUN wget -O- https://apt.repos.intel.com/intel-gpg-keys/GPG-PUB-KEY-INTEL-SW-PRODUCTS.PUB \
@@ -54,10 +53,13 @@ RUN apt-get update && \
   clinfo \
   intel-level-zero-gpu \
   level-zero \
-  level-zero-dev libigc-dev intel-igc-cm libigdfcl-dev libigfxcmrt-dev && \
+  level-zero-dev libigc-dev intel-igc-cm libigdfcl-dev libigfxcmrt-dev \
+  flex bison xpu-smi \
+  hwinfo clinfo && \
   apt-get clean && \
   rm -rf /var/lib/apt/lists/*
 
+
 FROM dev-base AS image
-COPY --from=build /opt/intel /opt/intel
+COPY --from=dev-base /opt/intel /opt/intel
 WORKDIR /workspace
