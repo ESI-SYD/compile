@@ -2,8 +2,6 @@ name: Base-image Nightly
 
 on:
   workflow_dispatch:
-  schedule:
-   - cron: '0 2 * * *'
 env:
   IMAGE_NAME: base-xpu
 
